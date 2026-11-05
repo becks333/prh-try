@@ -2135,7 +2135,7 @@
       <section class="balance-card">
         <div class="balance-label">Balance (GHS)</div>
         <div class="balance-value" id="balanceValue">GHS 12,500.00</div>
-        <div class="account-line" id="balanceEquivalent">Simulated balance only; no real cash is available.</div>
+        <div class="account-line" id="balanceEquivalent"></div>
       </section>
 
       <section class="asset-showcase" aria-label="Featured investment assets">
@@ -2366,7 +2366,7 @@
           <div class="jobs-heading">
             <div>
               <p class="jobs-eyebrow">Simulated tiers</p>
-              <div class="panel-header" id="jobsHeading">Choose your demo tier</div>
+              <div class="panel-header" id="jobsHeading">Choose a tier</div>
             </div>
             <span class="jobs-heading-note">5 tiers · 360-day simulation</span>
           </div>
@@ -2490,13 +2490,13 @@
       <button class="cancel-btn" id="closeRewardBtn" type="button">Close</button>
       <button class="primary-btn reward-spin-btn" id="spinRewardBtn" type="button">Spin</button>
     </div>
-    <button class="cancel-btn" id="claimDemoSpinBtn" type="button" style="width: 100%; margin-top: 12px;">Get 1 free demo spin</button>
+    <button class="cancel-btn" id="claimDemoSpinBtn" type="button" style="width: 100%; margin-top: 12px;">Get 1 free spin</button>
   </dialog>
 
   <dialog class="money-dialog" id="moneyDialog" aria-labelledby="moneyDialogTitle">
     <form id="moneyForm">
       <h2 id="moneyDialogTitle">Recharge</h2>
-      <p id="moneyDialogDescription">Demo only. No payment is processed.</p>
+      <p id="moneyDialogDescription">No payment is processed. Requests are stored in this browser for class-project testing.</p>
       <div class="field">
         <label for="moneyAmount">Amount (GHS equivalent)</label>
         <div class="input-wrap">
@@ -2545,7 +2545,7 @@
       <div class="dashboard-status" id="jobConfirmStatus" role="status" aria-live="polite"></div>
       <div class="dialog-actions">
         <button class="cancel-btn" id="cancelJobBtn" type="button">Cancel</button>
-        <button class="primary-btn" type="submit">Confirm demo job</button>
+        <button class="primary-btn" type="submit">Confirm job</button>
       </div>
     </form>
   </dialog>
@@ -2832,7 +2832,7 @@
       if (entry.sample) {
         const kind = document.createElement('span');
         kind.className = 'activity-kind';
-        kind.textContent = 'Example';
+        kind.textContent = 
         item.append(kind);
       }
       feed.append(item);
@@ -3025,7 +3025,7 @@
         return;
       }
       if (account.demoSpinClaimed === true) {
-        status.textContent = 'Your free demo spin has already been claimed.';
+        status.textContent = 'Your free spin has already been claimed.';
         document.getElementById('claimDemoSpinBtn').classList.add('hidden');
         return;
       }
@@ -3033,7 +3033,7 @@
       account.demoSpinClaimed = true;
       account.spinCredits = Math.max(0, Number(account.spinCredits) || 0) + 1;
       saveAccounts(accounts);
-      status.textContent = `Your free demo spin is ready. You have ${account.spinCredits} spin${account.spinCredits === 1 ? '' : 's'} available.`;
+      status.textContent = `Your free spin is ready. You have ${account.spinCredits} spin${account.spinCredits === 1 ? '' : 's'} available.`;
       document.getElementById('spinRewardBtn').disabled = false;
       document.getElementById('claimDemoSpinBtn').classList.add('hidden');
     }
@@ -3389,12 +3389,12 @@
               ${isCurrent ? '<span class="job-current-badge">Active</span>' : ''}
             </div>
             <div class="job-daily-reward">
-              <span>Daily demo reward</span>
+              <span>Daily simulated reward</span>
               <strong>${formatPointEquivalent(job.dailyIncome)}</strong>
               <small>Per full 24 hours</small>
             </div>
             <dl>
-              <div class="job-detail"><dt>Demo fee</dt><dd>${formatPointEquivalent(job.fee)}</dd></div>
+              <div class="job-detail"><dt>Fee</dt><dd>${formatPointEquivalent(job.fee)}</dd></div>
               <div class="job-detail"><dt>${jobDurationDays}-day total</dt><dd>${formatPointEquivalent(totalIncome)}</dd></div>
               <div class="job-detail is-net"><dt>Net after fee</dt><dd>${formatPointEquivalent(netDifference)}</dd></div>
             </dl>
@@ -3420,7 +3420,7 @@
       summary.classList.remove('hidden');
       summary.innerHTML = `<strong>${complete ? 'Completed' : 'Active'}: Job ${activeJob.id}</strong>
         <p>${complete
-          ? `Earned ${formatPointEquivalent(activeJob.incomePaid)} over ${jobDurationDays} days. You can now choose another demo tier.`
+          ? `Earned ${formatPointEquivalent(activeJob.incomePaid)} over ${jobDurationDays} days. You can now choose another tier.`
           : `Day ${activeJob.daysPaid} of ${jobDurationDays}. ${formatPointEquivalent(activeOption.dailyIncome)} per full 24 hours; ${formatPointEquivalent(activeJob.incomePaid)} earned so far. Upgrades deduct from your balance. Any due rewards are added when you next open the dashboard.`}</p>`;
     }
 
@@ -3443,8 +3443,8 @@
       document.getElementById('jobConfirmForm').dataset.jobId = String(job.id);
       document.getElementById('jobConfirmForm').dataset.isUpgrade = String(isUpgrade);
       details.textContent = isUpgrade
-        ? `Demo upgrade from Job ${activeJob.id} to Job ${job.id}: ${formatPointEquivalent(feeDue)} fee difference. Job ${job.id} simulates ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days (${formatPointEquivalent(totalIncome)} total). Net after the full fee is ${formatPointEquivalent(netDifference)}.`
-        : `Demo Job ${job.id} costs ${formatPointEquivalent(job.fee)} upfront. It simulates ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days (${formatPointEquivalent(totalIncome)} total). Net after the fee is ${formatPointEquivalent(netDifference)}.`;
+        ? `Upgrade from Job ${activeJob.id} to Job ${job.id}: ${formatPointEquivalent(feeDue)} fee difference. Job ${job.id} simulates ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days (${formatPointEquivalent(totalIncome)} total). Net after the full fee is ${formatPointEquivalent(netDifference)}.`
+        : `Job ${job.id} costs ${formatPointEquivalent(job.fee)} upfront. It simulates ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days (${formatPointEquivalent(totalIncome)} total). Net after the fee is ${formatPointEquivalent(netDifference)}.`;
       const invalidUpgrade = !!activeJob && !isUpgrade;
       const insufficientBalance = !account || account.balance < feeDue;
       status.textContent = invalidUpgrade
@@ -3454,7 +3454,7 @@
         : insufficientBalance
           ? `Your current balance is not enough to pay the ${isUpgrade ? 'upgrade difference' : 'job fee'}.`
           : '';
-      confirmButton.textContent = isUpgrade ? 'Confirm demo upgrade' : 'Confirm demo job';
+      confirmButton.textContent = isUpgrade ? 'Confirm upgrade' : 'Confirm job';
       confirmButton.disabled = invalidUpgrade || insufficientBalance;
       document.getElementById('jobConfirmDialog').showModal();
     }
@@ -3516,7 +3516,7 @@
       const isRecharge = action === 'recharge';
       const account = getCurrentAccount();
       const savedWithdrawal = account?.withdrawalMobileMoney;
-      document.getElementById('moneyDialogTitle').textContent = isRecharge ? 'Demo recharge' : 'Demo withdrawal';
+      document.getElementById('moneyDialogTitle').textContent = isRecharge ? 'Recharge request' : 'Withdrawal request';
       document.getElementById('moneyDialogDescription').textContent = isRecharge
         ? 'Simulate adding to the GHS balance. No payment is processed.'
         : 'Simulate deducting from the GHS balance. No cash is sent.';
@@ -3558,7 +3558,7 @@
       }
 
       if (action === 'recharge') {
-        instruction.textContent = `${formatPointEquivalent(amount)} will be added in this demo.`;
+        instruction.textContent = `${formatPointEquivalent(amount)} will be added after the request is approved.`;
         return;
       }
 
@@ -3651,7 +3651,7 @@
         (request.email || '').toLowerCase() === email
       );
       if (existingRequest) {
-        showStatus('login-status', 'success', 'A password reset request for this email is already pending admin review. This demo stores requests in this browser.');
+        showStatus('login-status', 'success', 'A password reset request for this email is already pending admin review. Requests are stored in this browser.');
         return;
       }
 
@@ -3661,13 +3661,13 @@
         kind: 'password_reset',
         email,
         name: account?.name || '',
-        note: 'Password reset requested. Once reviewed, the user can set a new password in this browser demo. Never ask them to share their current password.',
+        note: 'Password reset requested. Once reviewed, the user can set a new password in this browser. Never ask them to share their current password.',
         status: 'pending',
         createdAt: Date.now(),
         reviewedAt: null
       });
       saveRequestQueue(queue);
-      showStatus('login-status', 'success', 'Your password reset request has been sent to the admin queue. This demo stores requests in this browser.');
+      showStatus('login-status', 'success', 'Your password reset request has been sent to the admin queue. Requests are stored in this browser.');
     });
 
     resetPasswordForm.addEventListener('submit', (event) => {
@@ -3876,7 +3876,7 @@
         return;
       }
       if (action === 'withdrawal' && amount > account.balance) {
-        dialogStatus.textContent = 'There are not enough demo points for this withdrawal.';
+        dialogStatus.textContent = 'There is not enough balance for this withdrawal.';
         return;
       }
 
@@ -3914,8 +3914,8 @@
         withdrawalNumber: withdrawalMobileMoney?.number || null,
         withdrawalNetwork: withdrawalMobileMoney?.network || null,
         note: action === 'recharge'
-          ? 'User requested a demo deposit.'
-          : `User requested a demo withdrawal. 5% admin fee applied: ${formatPointEquivalent(withdrawalBreakdown.feeAmount)}; net payout: ${formatPointEquivalent(withdrawalBreakdown.netPayout)}.`,
+          ? 'User requested a deposit.'
+          : `User requested a withdrawal. 5% admin fee applied: ${formatPointEquivalent(withdrawalBreakdown.feeAmount)}; net payout: ${formatPointEquivalent(withdrawalBreakdown.netPayout)}.`,
         status: 'pending',
         createdAt: Date.now(),
         reviewedAt: null
@@ -3926,8 +3926,8 @@
       renderApp();
       document.getElementById('moneyDialog').close();
       document.getElementById('moneyStatus').textContent = action === 'recharge'
-        ? `Demo deposit request submitted. ${formatPointEquivalent(amount)} is pending admin approval.`
-        : `Demo withdrawal request submitted. ${formatPointEquivalent(withdrawalBreakdown.requestedAmount)} requested. 5% fee: ${formatPointEquivalent(withdrawalBreakdown.feeAmount)}. Net payout: ${formatPointEquivalent(withdrawalBreakdown.netPayout)}. Pending admin approval.`;
+        ? `Deposit request submitted. ${formatPointEquivalent(amount)} is pending admin approval.`
+        : `Withdrawal request submitted. ${formatPointEquivalent(withdrawalBreakdown.requestedAmount)} requested. 5% fee: ${formatPointEquivalent(withdrawalBreakdown.feeAmount)}. Net payout: ${formatPointEquivalent(withdrawalBreakdown.netPayout)}. Pending admin approval.`;
     });
 
     document.getElementById('rechargeForm').addEventListener('submit', (event) => {
@@ -4006,7 +4006,7 @@
         return;
       }
       if (amount > account.balance) {
-        status.textContent = 'There are not enough demo points for this withdrawal.';
+        status.textContent = 'There is not enough balance for this withdrawal.';
         return;
       }
       if (!number || !network) {

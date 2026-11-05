@@ -44,7 +44,7 @@
     .status { margin-top: 12px; min-height: 1.2em; color: #6e7d78; }
     .status.error { color: #a83f38; }
     .status.success { color: #247650; }
-    .admin-demo-note { margin: 0 0 16px; color: #6e7d78; font-size: 0.88rem; line-height: 1.5; }
+    .admin-local-data-note { margin: 0 0 16px; color: #6e7d78; font-size: 0.88rem; line-height: 1.5; }
     .admin-reward { margin: 22px 0; padding-bottom: 22px; border-bottom: 1px solid #e0e9e4; }
     .admin-reward h2 { margin: 0 0 8px; font-size: 1.2rem; }
     .admin-reward form { display: flex; align-items: center; gap: 10px; }
@@ -71,7 +71,7 @@
         <button class="wallet-button wallet-button-quiet" id="refreshAdmin" type="button">Refresh</button>
       </div>
       <div class="status" id="adminStatus" aria-live="polite"></div>
-      <p class="admin-demo-note">This demo page shows accounts saved in this browser only; it does not list Supabase users or securely restrict admin access. Deleting a demo account permanently removes its local account, requests, and activity. Do not use this page to manage real accounts. Marking a demo reset request as handled lets the user choose a new password here, but no reset email is sent.</p>
+      <p class="admin-local-data-note">This class-project page shows accounts saved in this browser only; it does not list Supabase users or securely restrict admin access. Deleting an account permanently removes its local account, requests, and activity. Do not use this page to manage real accounts. Marking a password reset request as handled lets the user choose a new password here, but no reset email is sent.</p>
       <section class="admin-section" aria-labelledby="accountsHeading">
         <div class="admin-section-heading">
           <div>
@@ -190,7 +190,7 @@
       });
     }
 
-    function deleteDemoAccount(email) {
+    function deleteLocalAccount(email) {
       const accounts = getAccounts();
       const account = accounts.find((item) => item.email === email);
       if (!account) {
@@ -228,7 +228,7 @@
 
         if (session?.email === email) localStorage.removeItem('prhSession');
 
-        setStatus(`Deleted ${displayName} and removed the account’s local demo data.`, 'success');
+        setStatus(`Deleted ${displayName} and removed the account’s local data.`, 'success');
         renderAdmin();
       } catch (error) {
         setStatus(`Could not delete the account: ${error.message}`, 'error');
@@ -378,7 +378,7 @@
     document.getElementById('adminAccounts').addEventListener('click', (event) => {
       const button = event.target.closest('button[data-delete-account]');
       if (!button) return;
-      deleteDemoAccount(button.dataset.email);
+      deleteLocalAccount(button.dataset.email);
     });
     document.getElementById('grantSpinForm').addEventListener('submit', (event) => {
       event.preventDefault();
