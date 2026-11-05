@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PRH | Admin Approval</title>
+  <link rel="stylesheet" href="wallet.css" />
+  <style>
+    body { margin: 0; font-family: "Avenir Next", Arial, sans-serif; background: #f2f6f3; color: #1e302d; }
+    .admin-shell { max-width: 980px; margin: 28px auto; padding: 0 20px 40px; }
+    .admin-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+    .admin-brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 800; color: #17483f; text-decoration: none; }
+    .admin-brand-mark { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 10px; color: white; background: #17483f; }
+    .admin-card { background: white; border: 1px solid #e0e9e4; border-radius: 12px; padding: 20px; box-shadow: 0 10px 28px rgba(23,72,63,.05); }
+    .admin-header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .admin-header h1 { margin: 0; font-size: 2rem; }
+    .admin-list { display: grid; gap: 14px; }
+    .admin-section { margin: 24px 0; }
+    .admin-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 12px; }
+    .admin-section-heading h2 { margin: 0; font-size: 1.2rem; }
+    .admin-section-meta { color: #6e7d78; font-size: 0.84rem; }
+    .admin-account-search { width: min(100%, 300px); min-height: 42px; padding: 9px 12px; border: 1px solid #cbd9d1; border-radius: 8px; color: #1e302d; font: inherit; }
+    .admin-account-list { display: grid; gap: 10px; }
+    .admin-account { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 8px 18px; padding: 15px 16px; border: 1px solid #e0e9e4; border-radius: 10px; }
+    .admin-account-identity { min-width: 0; }
+    .admin-account-identity strong { display: block; overflow-wrap: anywhere; }
+    .admin-account-identity p, .admin-account-meta { margin: 4px 0 0; color: #6e7d78; font-size: 0.86rem; overflow-wrap: anywhere; }
+    .admin-account-balance { text-align: right; white-space: nowrap; }
+    .admin-account-balance strong { color: #17483f; }
+    .admin-account-balance span { display: block; margin-top: 4px; color: #6e7d78; font-size: 0.78rem; }
+    .admin-account-meta { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px 18px; }
+    .admin-account-delete { justify-self: end; border: 1px solid #e7b9b5; border-radius: 8px; padding: 8px 11px; background: #fff0ef; color: #a83f38; font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+    .admin-account-delete:hover { background: #ffe4e1; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .admin-request { display: flex; align-items: center; justify-content: space-between; gap: 14px; border: 1px solid #e0e9e4; border-radius: 10px; padding: 16px; }
+    .admin-request-main strong { display: block; font-size: 1.05rem; }
+    .admin-request-main p { margin: 6px 0 0; color: #6e7d78; font-size: 0.9rem; }
+    .admin-request-side { display: flex; align-items: center; gap: 12px; }
+    .admin-actions { display: flex; gap: 8px; }
+    .admin-btn { border: none; border-radius: 8px; padding: 9px 12px; font-weight: 700; cursor: pointer; }
+    .approve { background: #17483f; color: white; }
+    .reject { background: #fff0ef; color: #a83f38; border: 1px solid #e7b9b5; }
+    .empty { color: #6e7d78; text-align: center; padding: 18px; border: 1px dashed #cbd9d1; border-radius: 8px; }
+    .status { margin-top: 12px; min-height: 1.2em; color: #6e7d78; }
+    .status.error { color: #a83f38; }
+    .status.success { color: #247650; }
+    .admin-demo-note { margin: 0 0 16px; color: #6e7d78; font-size: 0.88rem; line-height: 1.5; }
+    .admin-reward { margin: 22px 0; padding-bottom: 22px; border-bottom: 1px solid #e0e9e4; }
+    .admin-reward h2 { margin: 0 0 8px; font-size: 1.2rem; }
+    .admin-reward form { display: flex; align-items: center; gap: 10px; }
+    .admin-reward select { min-width: 0; flex: 1; border: 1px solid #cbd9d1; border-radius: 8px; padding: 10px; font: inherit; }
+    @media (max-width: 560px) {
+      .admin-reward form { align-items: stretch; flex-direction: column; }
+      .admin-section-heading { align-items: stretch; flex-direction: column; }
+      .admin-account-search { width: 100%; }
+      .admin-account { grid-template-columns: minmax(0, 1fr); }
+      .admin-account-balance { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-shell">
+    <header class="admin-topbar">
+      <a class="admin-brand" href="index.html"><span class="admin-brand-mark">PRH</span><span>Admin approval</span></a>
+      <a class="wallet-admin-link" href="index.html">User dashboard</a>
+    </header>
+
+    <main class="admin-card">
+      <div class="admin-header">
+        <h1>Pending requests</h1>
+        <button class="wallet-button wallet-button-quiet" id="refreshAdmin" type="button">Refresh</button>
+      </div>
+      <div class="status" id="adminStatus" aria-live="polite"></div>
+      <p class="admin-demo-note">This demo page shows accounts saved in this browser only; it does not list Supabase users or securely restrict admin access. Deleting a demo account permanently removes its local account, requests, and activity. Do not use this page to manage real accounts. Marking a demo reset request as handled lets the user choose a new password here, but no reset email is sent.</p>
+      <section class="admin-section" aria-labelledby="accountsHeading">
+        <div class="admin-section-heading">
+          <div>
+            <h2 id="accountsHeading">Registered accounts</h2>
+            <span class="admin-section-meta" id="accountCount">0 accounts</span>
+          </div>
+          <label>
+            <span class="sr-only">Search accounts</span>
+            <input class="admin-account-search" id="accountSearch" type="search" placeholder="Search name or email" autocomplete="off" />
+          </label>
+        </div>
+        <div class="admin-account-list" id="adminAccounts" aria-live="polite"></div>
+      </section>
+      <section class="admin-reward" aria-labelledby="rewardUserHeading">
+        <h2 id="rewardUserHeading">Grant a spin</h2>
+        <form id="grantSpinForm">
+          <label for="spinUserSelect">Choose a user</label>
+          <select id="spinUserSelect" required></select>
+          <button class="admin-btn approve" type="submit">Grant one spin</button>
+        </form>
+      </section>
+      <div class="admin-list" id="adminList"></div>
+    </main>
+  </div>
+
+  <script>
+    function getAccounts() {
+      try {
+        const accounts = JSON.parse(localStorage.getItem('prhAccounts'));
+        return Array.isArray(accounts) ? accounts : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function getRequestQueue() {
+      try {
+        const queue = JSON.parse(localStorage.getItem('prhRequestQueue'));
+        return Array.isArray(queue) ? queue : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveAccounts(accounts) {
+      localStorage.setItem('prhAccounts', JSON.stringify(accounts));
+    }
+
+    function saveRequestQueue(queue) {
+      localStorage.setItem('prhRequestQueue', JSON.stringify(queue));
+    }
+
+    function formatGhs(amount) {
+      return `GHS ${Number(amount).toLocaleString('en-GH', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    function renderAccounts() {
+      const accounts = getAccounts();
+      const query = document.getElementById('accountSearch').value.trim().toLowerCase();
+      const list = document.getElementById('adminAccounts');
+      const visibleAccounts = accounts
+        .filter((account) => `${account.name || ''} ${account.email || ''}`.toLowerCase().includes(query))
+        .sort((left, right) => (Number(right.registeredAt) || 0) - (Number(left.registeredAt) || 0));
+      const count = accounts.length;
+      document.getElementById('accountCount').textContent = `${count} registered ${count === 1 ? 'account' : 'accounts'}`;
+      list.replaceChildren();
+
+      if (!visibleAccounts.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = accounts.length ? 'No accounts match your search.' : 'No registered accounts yet.';
+        list.append(empty);
+        return;
+      }
+
+      visibleAccounts.forEach((account) => {
+        const row = document.createElement('article');
+        row.className = 'admin-account';
+
+        const identity = document.createElement('div');
+        identity.className = 'admin-account-identity';
+        const name = document.createElement('strong');
+        name.textContent = account.name || 'Unnamed account';
+        const email = document.createElement('p');
+        email.textContent = account.email || 'No email recorded';
+        identity.append(name, email);
+
+        const balance = document.createElement('div');
+        balance.className = 'admin-account-balance';
+        const amount = document.createElement('strong');
+        amount.textContent = formatGhs(Number(account.balance) || 0);
+        const balanceLabel = document.createElement('span');
+        balanceLabel.textContent = 'Current balance';
+        balance.append(amount, balanceLabel);
+
+        const meta = document.createElement('div');
+        meta.className = 'admin-account-meta';
+        const registeredAt = Number(account.registeredAt);
+        const registered = document.createElement('span');
+        registered.textContent = Number.isFinite(registeredAt) && registeredAt > 0
+          ? `Joined ${new Date(registeredAt).toLocaleDateString()}`
+          : 'Join date not recorded';
+        const activeJob = account.activeJob && account.activeJob.daysPaid < 360;
+        const job = document.createElement('span');
+        job.textContent = activeJob ? `Active Job ${account.activeJob.id}` : 'No active job';
+        meta.append(registered, job);
+
+        const deleteButton = document.createElement('button');
+        deleteButton.className = 'admin-account-delete';
+        deleteButton.type = 'button';
+        deleteButton.dataset.deleteAccount = 'true';
+        deleteButton.dataset.email = account.email || '';
+        deleteButton.textContent = 'Delete account';
+        row.append(identity, balance, meta, deleteButton);
+        list.append(row);
+      });
+    }
+
+    function deleteDemoAccount(email) {
+      const accounts = getAccounts();
+      const account = accounts.find((item) => item.email === email);
+      if (!account) {
+        setStatus('That account could not be found. Refresh the list and try again.', 'error');
+        renderAdmin();
+        return;
+      }
+
+      const displayName = account.name || account.email;
+      const confirmed = window.confirm(
+        `Delete ${displayName} (${account.email})?\n\nThis permanently removes the account, its saved requests, and its activity from this browser. This cannot be undone.`
+      );
+      if (!confirmed) return;
+
+      try {
+        const queue = JSON.parse(localStorage.getItem('prhRequestQueue') || '[]');
+        const activity = JSON.parse(localStorage.getItem('prhJobActivity') || '[]');
+        if (!Array.isArray(queue) || !Array.isArray(activity)) {
+          throw new Error('Saved request or activity data is invalid.');
+        }
+        let session = null;
+        try {
+          session = JSON.parse(localStorage.getItem('prhSession') || 'null');
+        } catch {
+          session = null;
+        }
+
+        const remainingAccounts = accounts.filter((item) => item.email !== email);
+        const remainingRequests = queue.filter((request) => request.email !== email);
+        const remainingActivity = activity.filter((entry) => entry.email !== email);
+
+        localStorage.setItem('prhAccounts', JSON.stringify(remainingAccounts));
+        localStorage.setItem('prhRequestQueue', JSON.stringify(remainingRequests));
+        localStorage.setItem('prhJobActivity', JSON.stringify(remainingActivity));
+
+        if (session?.email === email) localStorage.removeItem('prhSession');
+
+        setStatus(`Deleted ${displayName} and removed the account’s local demo data.`, 'success');
+        renderAdmin();
+      } catch (error) {
+        setStatus(`Could not delete the account: ${error.message}`, 'error');
+      }
+    }
+
+    function renderSpinUsers() {
+      const select = document.getElementById('spinUserSelect');
+      const accounts = getAccounts();
+      select.innerHTML = '';
+
+      if (!accounts.length) {
+        const option = document.createElement('option');
+        option.value = '';
+        option.textContent = 'No users found';
+        select.append(option);
+        select.disabled = true;
+        return;
+      }
+
+      select.disabled = false;
+      accounts.forEach((account) => {
+        const option = document.createElement('option');
+        option.value = account.email;
+        option.textContent = `${account.name || account.email} (${Number(account.spinCredits) || 0} spins)`;
+        select.append(option);
+      });
+    }
+
+    function renderAdmin() {
+      const list = document.getElementById('adminList');
+      renderAccounts();
+      renderSpinUsers();
+      const requests = getRequestQueue().filter((request) => request.status === 'pending');
+      list.innerHTML = '';
+
+      if (!requests.length) {
+        list.innerHTML = '<div class="empty">No pending requests.</div>';
+        return;
+      }
+
+      requests.forEach((request) => {
+        const row = document.createElement('div');
+        row.className = 'admin-request';
+
+        const main = document.createElement('div');
+        main.className = 'admin-request-main';
+        const heading = document.createElement('strong');
+        const requestTitle = request.kind === 'deposit'
+          ? 'Deposit request'
+          : request.kind === 'withdrawal'
+            ? 'Withdrawal request'
+            : 'Password reset request';
+        heading.textContent = `${requestTitle} · ${request.name || request.email}`;
+        main.append(heading);
+
+        const addDetail = (text) => {
+          const detail = document.createElement('p');
+          detail.textContent = text;
+          main.append(detail);
+        };
+
+        addDetail(request.email);
+        addDetail(`Submitted: ${new Date(request.createdAt).toLocaleString()}`);
+        if (request.kind === 'deposit' && request.mobileMoneyName) {
+          addDetail(`Mobile money account name: ${request.mobileMoneyName}`);
+        }
+        if (request.kind === 'withdrawal' && (request.withdrawalNumber || request.withdrawalNetwork)) {
+          addDetail(`Withdrawal mobile money: ${request.withdrawalNumber || 'Number not provided'} · ${request.withdrawalNetwork || 'Network not provided'}`);
+        }
+        addDetail(request.note || 'No note provided');
+
+        const side = document.createElement('div');
+        side.className = 'admin-request-side';
+        if (request.kind === 'password_reset') {
+          side.innerHTML = `
+            <div class="admin-actions">
+              <button class="admin-btn approve" data-action="handled" data-id="${request.id}" type="button">Mark handled</button>
+              <button class="admin-btn reject" data-action="reject" data-id="${request.id}" type="button">Dismiss</button>
+            </div>
+          `;
+        } else {
+          side.innerHTML = `
+            <strong>${formatGhs(request.amount)}</strong>
+            <div class="admin-actions">
+              <button class="admin-btn approve" data-action="approve" data-id="${request.id}" type="button">Approve</button>
+              <button class="admin-btn reject" data-action="reject" data-id="${request.id}" type="button">Reject</button>
+            </div>
+          `;
+        }
+
+        row.append(main, side);
+        list.append(row);
+      });
+    }
+
+    function setStatus(message, kind = '') {
+      const status = document.getElementById('adminStatus');
+      status.textContent = message;
+      status.className = `status${kind ? ` ${kind}` : ''}`;
+    }
+
+    function approveRequest(requestId, action) {
+      const queue = getRequestQueue();
+      const request = queue.find((item) => item.id === requestId);
+      if (!request) return;
+
+      if (request.kind === 'password_reset') {
+        request.status = action === 'handled' ? 'handled' : 'rejected';
+        request.reviewedAt = Date.now();
+        saveRequestQueue(queue);
+        setStatus(action === 'handled' ? 'Password reset request marked as handled.' : 'Password reset request dismissed.', 'success');
+        renderAdmin();
+        return;
+      }
+
+      const accounts = getAccounts();
+
+      const account = accounts.find((item) => item.email === request.email);
+      if (!account) {
+        setStatus('User account could not be found.', 'error');
+        return;
+      }
+
+      if (action === 'approve') {
+        if (request.kind === 'deposit') {
+          account.balance = Number((Number(account.balance) + Number(request.amount)).toFixed(2));
+        } else {
+          if (Number(account.balance) < Number(request.amount)) {
+            setStatus('This withdrawal cannot be approved because the balance is too low.', 'error');
+            return;
+          }
+          account.balance = Number((Number(account.balance) - Number(request.amount)).toFixed(2));
+        }
+      }
+
+      request.status = action === 'approve' ? 'approved' : 'rejected';
+      request.reviewedAt = Date.now();
+      saveAccounts(accounts);
+      saveRequestQueue(queue);
+      setStatus(action === 'approve' ? 'Request approved.' : 'Request rejected.', 'success');
+      renderAdmin();
+    }
+
+    document.getElementById('refreshAdmin').addEventListener('click', renderAdmin);
+    document.getElementById('accountSearch').addEventListener('input', renderAccounts);
+    document.getElementById('adminAccounts').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-delete-account]');
+      if (!button) return;
+      deleteDemoAccount(button.dataset.email);
+    });
+    document.getElementById('grantSpinForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const email = document.getElementById('spinUserSelect').value;
+      const accounts = getAccounts();
+      const account = accounts.find((item) => item.email === email);
+      if (!account) {
+        setStatus('Choose a valid user before granting a spin.', 'error');
+        return;
+      }
+
+      account.spinCredits = (Number(account.spinCredits) || 0) + 1;
+      saveAccounts(accounts);
+      setStatus(`One spin granted to ${account.name || account.email}.`, 'success');
+      renderAdmin();
+    });
+    document.getElementById('adminList').addEventListener('click', (event) => {
+      const button = event.target.closest('button[data-id]');
+      if (!button) return;
+      const requestId = button.dataset.id;
+      approveRequest(requestId, button.dataset.action);
+    });
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === 'prhRequestQueue' || event.key === 'prhAccounts') renderAdmin();
+    });
+
+    renderAdmin();
+  </script>
+</body>
+</html>
