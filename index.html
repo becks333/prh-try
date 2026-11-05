@@ -1385,8 +1385,8 @@
       left: 50%;
       bottom: max(14px, env(safe-area-inset-bottom));
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      width: min(440px, calc(100% - 28px));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      width: min(500px, calc(100% - 28px));
       padding: 7px;
       border: 1px solid rgba(226, 234, 230, 0.95);
       border-radius: 14px;
@@ -1415,6 +1415,36 @@
     .dashboard-shell { margin-bottom: 88px; }
 
     .task-page { max-width: 980px; margin: 0 auto; padding-bottom: 100px; }
+    .recharge-page { max-width: 720px; margin: 0 auto; padding-bottom: 100px; }
+    .wallet-action-dialog {
+      width: min(620px, calc(100% - 32px));
+      max-width: 620px;
+      max-height: min(90vh, 900px);
+      overflow-y: auto;
+      padding: 24px;
+      margin: auto;
+    }
+    .recharge-destination {
+      margin-bottom: 18px;
+      padding: 18px 20px;
+      border: 1px solid #dcebe1;
+      border-radius: 12px;
+      background: linear-gradient(110deg, #f1f8f3, #fbfdfb);
+    }
+    .recharge-destination span {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .recharge-destination strong { color: var(--primary); font-size: 1.15rem; }
+    .recharge-form-panel { padding: 24px; }
+    .recharge-form-panel .field { margin-bottom: 18px; }
+    .recharge-note { margin: 0 0 18px; color: var(--muted); font-size: 0.84rem; line-height: 1.55; }
+    .recharge-status { min-height: 1.4rem; margin: 12px 0; color: var(--success); font-size: 0.86rem; font-weight: 700; }
     .task-heading { margin-bottom: 22px; }
     .task-eyebrow {
       margin-bottom: 6px;
@@ -1560,7 +1590,8 @@
     #startTaskBtn:disabled, #submitTaskBtn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
 
     .reward-dialog {
-      overflow: visible;
+      max-height: calc(100vh - 32px);
+      overflow-y: auto;
       border: 1px solid rgba(255,255,255,0.82);
       border-radius: 22px;
       background: linear-gradient(155deg, #fff 0%, #fbfcfa 100%);
@@ -1756,6 +1787,7 @@
       .dashboard-shell { border-radius: 12px; }
       .dashboard-body { padding: 22px 16px 26px; }
       .topbar { padding: 12px 16px; }
+      .dashboard-nav button { font-size: 0.64rem; }
       .welcome-row { gap: 12px; }
       .welcome-row h1 { font-size: 1.65rem; }
       .balance-card { padding: 23px 20px; }
@@ -1797,6 +1829,7 @@
       .task-points-label { margin: 0; }
       .task-progress-wrap { width: 100%; }
       .task-heading h1 { font-size: 1.7rem; }
+      .recharge-form-panel { padding: 18px; }
     }
   </style>
 </head>
@@ -2210,7 +2243,7 @@
         <div>
           <div class="action-row">
             <button class="action-btn primary" id="rechargeBtn" type="button">Recharge</button>
-            <button class="action-btn secondary" id="withdrawBtn" type="button">Withdraw (demo)</button>
+            <button class="action-btn secondary" id="withdrawBtn" type="button">Withdraw</button>
           </div>
           <div class="dashboard-status" id="moneyStatus" role="status" aria-live="polite"></div>
         </div>
@@ -2240,6 +2273,79 @@
       </section>
       </div>
 
+      <dialog class="money-dialog recharge-page wallet-action-dialog" id="rechargeDialog" aria-labelledby="rechargePageTitle">
+        <div class="task-heading">
+          <div class="task-eyebrow">Wallet</div>
+          <h1 id="rechargePageTitle">Recharge</h1>
+          <p>Send your payment to the number below, then submit the transaction ID for confirmation.</p>
+        </div>
+        <button class="cancel-btn" id="closeRechargeDialogBtn" type="button" style="width: 100%; margin-bottom: 18px;">Close</button>
+        <div class="recharge-destination">
+          <span>Send payment to</span>
+          <strong id="rechargeDestinationNumber">Number to be provided</strong>
+        </div>
+        <form class="panel recharge-form-panel" id="rechargeForm">
+          <div class="panel-header">Recharge</div>
+          <div class="field">
+            <label for="rechargeAmount">Amount (GHS)</label>
+            <div class="input-wrap">
+              <input id="rechargeAmount" type="number" min="0.01" max="1000000" step="0.01" placeholder="0.00" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="rechargeSenderName">Name on the sending mobile money account</label>
+            <div class="input-wrap">
+              <input id="rechargeSenderName" type="text" maxlength="100" autocomplete="name" placeholder="Account holder name" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="rechargeTransactionId">Payment transaction ID</label>
+            <div class="input-wrap">
+              <input id="rechargeTransactionId" type="text" maxlength="100" autocomplete="off" placeholder="Enter the ID from your payment receipt" required />
+            </div>
+          </div>
+          <p class="recharge-note">Your balance will not change until an administrator confirms the payment. Only submit a transaction ID after completing the payment.</p>
+          <p class="recharge-status" id="rechargeStatus" role="status" aria-live="polite"></p>
+          <button class="primary-btn" type="submit">Submit for confirmation</button>
+        </form>
+      </dialog>
+
+      <dialog class="money-dialog recharge-page wallet-action-dialog" id="withdrawalDialog" aria-labelledby="withdrawalPageTitle">
+        <div class="task-heading">
+          <div class="task-eyebrow">Wallet</div>
+          <h1 id="withdrawalPageTitle">Withdraw</h1>
+          <p>Submit your withdrawal details for administrator review.</p>
+        </div>
+        <button class="cancel-btn" id="closeWithdrawalDialogBtn" type="button" style="width: 100%; margin-bottom: 18px;">Close</button>
+        <form class="panel recharge-form-panel" id="withdrawalForm">
+          <div class="panel-header">Withdraw</div>
+          <p class="recharge-note">Withdrawal requests are reviewed by an administrator. A 5% fee is deducted from the requested amount; the remainder is paid to your mobile money account.</p>
+          <div class="field">
+            <label for="pageWithdrawalAmount">Amount (GHS)</label>
+            <div class="input-wrap">
+              <input id="pageWithdrawalAmount" type="number" min="0.01" max="1000000" step="0.01" placeholder="0.00" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="pageWithdrawalNumber">Mobile money number</label>
+            <div class="input-wrap">
+              <input id="pageWithdrawalNumber" type="tel" maxlength="20" autocomplete="tel" placeholder="e.g. 0241234567" required />
+            </div>
+          </div>
+          <div class="field">
+            <label for="pageWithdrawalNetwork">Network</label>
+            <select id="pageWithdrawalNetwork" required>
+              <option value="">Choose a network</option>
+              <option value="MTN">MTN</option>
+              <option value="Telecel">Telecel</option>
+              <option value="AT">AT</option>
+            </select>
+          </div>
+          <p class="recharge-status" id="withdrawalPageStatus" role="status" aria-live="polite"></p>
+          <button class="primary-btn" type="submit">Submit withdrawal request</button>
+        </form>
+      </dialog>
+
       <section class="dashboard-page jobs-page hidden" id="jobsPage" aria-labelledby="jobsHeading">
         <section class="panel jobs-section" id="jobsSection" aria-labelledby="jobsHeading">
           <div class="jobs-heading">
@@ -2253,52 +2359,6 @@
           <div class="job-grid" id="jobGrid"></div>
           <div class="active-job-summary hidden" id="activeJobSummary" role="status" aria-live="polite"></div>
         </section>
-      </section>
-
-      <section class="dashboard-page rewards-page hidden" id="rewardsPage" aria-labelledby="rewardsPageTitle">
-        <div class="task-heading">
-          <div class="task-eyebrow">Prizes</div>
-          <h1 id="rewardsPageTitle">Rewards</h1>
-          <p>Spin for a simulated cash prize and track your latest reward streak without leaving the dashboard.</p>
-        </div>
-        <div class="task-summary" style="grid-template-columns: minmax(0, 1fr);">
-          <div class="task-summary-main">
-            <div class="task-summary-icon">★</div>
-            <div>
-              <strong>Reward spin</strong>
-              <span>Use an earned spin to win a simulated GHS prize.</span>
-            </div>
-          </div>
-        </div>
-        <div class="panel task-workspace" style="padding: 0;">
-          <div class="task-workspace-header" style="padding: 24px 26px 12px;">
-            <div>
-              <div class="task-type">Lucky draw</div>
-              <h2>Spin for your next reward</h2>
-              <p class="task-instructions">Your reward wheel lives on this dedicated page, so it no longer sits on the home screen.</p>
-            </div>
-          </div>
-          <div class="task-action-bar" style="padding-top: 0;">
-            <div class="reward-wheel-wrap" aria-hidden="true" style="margin-top: 4px;">
-              <span class="reward-pointer"></span>
-              <div class="reward-wheel" id="rewardsPageWheel">
-                <span class="reward-wheel-value" style="--label-angle: 22.5deg; --label-counter-angle: -22.5deg;">GHS 5</span>
-                <span class="reward-wheel-value" style="--label-angle: 67.5deg; --label-counter-angle: -67.5deg;">GHS 10</span>
-                <span class="reward-wheel-value" style="--label-angle: 112.5deg; --label-counter-angle: -112.5deg;">GHS 20</span>
-                <span class="reward-wheel-value" style="--label-angle: 157.5deg; --label-counter-angle: -157.5deg;">GHS 50</span>
-                <span class="reward-wheel-value" style="--label-angle: 202.5deg; --label-counter-angle: -202.5deg;">GHS 10</span>
-                <span class="reward-wheel-value" style="--label-angle: 247.5deg; --label-counter-angle: -247.5deg;">GHS 25</span>
-                <span class="reward-wheel-value" style="--label-angle: 292.5deg; --label-counter-angle: -292.5deg;">GHS 100</span>
-                <span class="reward-wheel-value" style="--label-angle: 337.5deg; --label-counter-angle: -337.5deg;">GHS 15</span>
-                <span class="reward-wheel-center"><strong>PRH</strong><small>REWARDS</small></span>
-              </div>
-            </div>
-            <div class="reward-status" id="rewardsPageStatus" role="status" aria-live="polite"></div>
-            <div class="task-controls" style="justify-content: center;">
-              <button class="primary-btn reward-spin-btn" id="rewardsPageSpinBtn" type="button">Spin</button>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section class="dashboard-page task-page hidden" id="taskPage" aria-labelledby="taskPageTitle">
@@ -2392,6 +2452,7 @@
       <button class="cancel-btn" id="closeRewardBtn" type="button">Close</button>
       <button class="primary-btn reward-spin-btn" id="spinRewardBtn" type="button">Spin</button>
     </div>
+    <button class="cancel-btn" id="claimDemoSpinBtn" type="button" style="width: 100%; margin-top: 12px;">Get 1 free demo spin</button>
   </dialog>
 
   <dialog class="money-dialog" id="moneyDialog" aria-labelledby="moneyDialogTitle">
@@ -2897,29 +2958,46 @@
     }
 
     function getRewardUi() {
-      const rewardsPageVisible = !document.getElementById('rewardsPage').classList.contains('hidden');
-      const modalOpen = document.getElementById('rewardDialog').open;
-      const wheel = rewardsPageVisible
-        ? document.getElementById('rewardsPageWheel')
-        : (modalOpen ? document.getElementById('rewardWheel') : document.getElementById('rewardWheel') || document.getElementById('rewardsPageWheel'));
-      const status = rewardsPageVisible
-        ? document.getElementById('rewardsPageStatus')
-        : (modalOpen ? document.getElementById('rewardStatus') : document.getElementById('rewardStatus') || document.getElementById('rewardsPageStatus'));
-      const button = rewardsPageVisible
-        ? document.getElementById('rewardsPageSpinBtn')
-        : (modalOpen ? document.getElementById('spinRewardBtn') : document.getElementById('spinRewardBtn') || document.getElementById('rewardsPageSpinBtn'));
-      return { wheel, status, button };
+      return {
+        wheel: document.getElementById('rewardWheel'),
+        status: document.getElementById('rewardStatus'),
+        button: document.getElementById('spinRewardBtn')
+      };
     }
 
     function openRewardDialog() {
       const account = getCurrentAccount();
       const spinCredits = Math.max(0, Number(account?.spinCredits) || 0);
+      document.getElementById('rewardDialog').showModal();
       const { status, button } = getRewardUi();
+      document.getElementById('claimDemoSpinBtn').classList.toggle('hidden', !account || account.demoSpinClaimed === true);
       status.textContent = spinCredits
         ? `You have ${spinCredits} spin${spinCredits === 1 ? '' : 's'} available.`
         : 'Earn a spin when 3 people you referred join a job, or when an admin grants you one.';
       button.disabled = spinCredits === 0 || isRewardSpinning;
-      document.getElementById('rewardDialog').showModal();
+    }
+
+    function claimDemoSpin() {
+      const session = getSession();
+      const accounts = getAccounts();
+      const account = accounts.find((savedAccount) => savedAccount.email === (session.email || '').toLowerCase());
+      const status = document.getElementById('rewardStatus');
+      if (!account) {
+        status.textContent = 'Your account could not be found. Please log in again.';
+        return;
+      }
+      if (account.demoSpinClaimed === true) {
+        status.textContent = 'Your free demo spin has already been claimed.';
+        document.getElementById('claimDemoSpinBtn').classList.add('hidden');
+        return;
+      }
+
+      account.demoSpinClaimed = true;
+      account.spinCredits = Math.max(0, Number(account.spinCredits) || 0) + 1;
+      saveAccounts(accounts);
+      status.textContent = `Your free demo spin is ready. You have ${account.spinCredits} spin${account.spinCredits === 1 ? '' : 's'} available.`;
+      document.getElementById('spinRewardBtn').disabled = false;
+      document.getElementById('claimDemoSpinBtn').classList.add('hidden');
     }
 
     function spinRewardWheel() {
@@ -3672,8 +3750,12 @@
       document.getElementById('signupForm').reset();
     });
 
-    document.getElementById('rechargeBtn').addEventListener('click', () => openMoneyDialog('recharge'));
-    document.getElementById('withdrawBtn').addEventListener('click', () => openMoneyDialog('withdrawal'));
+    const rechargeDialog = document.getElementById('rechargeDialog');
+    const withdrawalDialog = document.getElementById('withdrawalDialog');
+    document.getElementById('rechargeBtn').addEventListener('click', () => rechargeDialog.showModal());
+    document.getElementById('withdrawBtn').addEventListener('click', () => withdrawalDialog.showModal());
+    document.getElementById('closeRechargeDialogBtn').addEventListener('click', () => rechargeDialog.close());
+    document.getElementById('closeWithdrawalDialogBtn').addEventListener('click', () => withdrawalDialog.close());
     document.getElementById('cancelMoneyBtn').addEventListener('click', () => {
       document.getElementById('moneyDialog').close();
     });
@@ -3806,6 +3888,118 @@
         : `Demo withdrawal request submitted. ${formatPointEquivalent(withdrawalBreakdown.requestedAmount)} requested. 5% fee: ${formatPointEquivalent(withdrawalBreakdown.feeAmount)}. Net payout: ${formatPointEquivalent(withdrawalBreakdown.netPayout)}. Pending admin approval.`;
     });
 
+    document.getElementById('rechargeForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const amount = Number(document.getElementById('rechargeAmount').value);
+      const senderName = document.getElementById('rechargeSenderName').value.trim();
+      const transactionId = document.getElementById('rechargeTransactionId').value.trim();
+      const status = document.getElementById('rechargeStatus');
+      const session = getSession();
+      const account = getAccounts().find((savedAccount) => savedAccount.email === (session.email || '').toLowerCase());
+
+      if (!Number.isFinite(amount) || amount <= 0 || amount > 1000000) {
+        status.textContent = 'Enter a valid amount between GHS 0.01 and GHS 1,000,000.';
+        return;
+      }
+      if (!senderName || !transactionId) {
+        status.textContent = 'Enter the sending account name and payment transaction ID.';
+        return;
+      }
+      if (!account) {
+        status.textContent = 'Your account could not be found. Please log in again.';
+        return;
+      }
+
+      const queue = getRequestQueue();
+      const normalizedTransactionId = transactionId.toLowerCase();
+      const duplicateTransaction = queue.some((request) =>
+        request.kind === 'deposit' && String(request.transactionId || '').trim().toLowerCase() === normalizedTransactionId
+      );
+      if (duplicateTransaction) {
+        status.textContent = 'That transaction ID has already been submitted. Check the ID or contact support.';
+        return;
+      }
+
+      queue.unshift({
+        id: `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        email: account.email,
+        name: account.name,
+        kind: 'deposit',
+        amount: Number(amount.toFixed(2)),
+        feeAmount: 0,
+        netPayout: Number(amount.toFixed(2)),
+        mobileMoneyName: senderName,
+        transactionId,
+        withdrawalNumber: null,
+        withdrawalNetwork: null,
+        note: `Mobile money sender: ${senderName}. Payment transaction ID: ${transactionId}.`,
+        status: 'pending',
+        createdAt: Date.now(),
+        reviewedAt: null
+      });
+      saveRequestQueue(queue);
+      renderApp();
+      event.currentTarget.reset();
+      status.textContent = 'Recharge request submitted. Your balance will update after payment confirmation.';
+      document.getElementById('moneyStatus').textContent = status.textContent;
+      rechargeDialog.close();
+    });
+
+    document.getElementById('withdrawalForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const amount = Number(document.getElementById('pageWithdrawalAmount').value);
+      const number = document.getElementById('pageWithdrawalNumber').value.trim();
+      const network = document.getElementById('pageWithdrawalNetwork').value;
+      const status = document.getElementById('withdrawalPageStatus');
+      const session = getSession();
+      const accounts = getAccounts();
+      const account = accounts.find((savedAccount) => savedAccount.email === (session.email || '').toLowerCase());
+
+      if (!Number.isFinite(amount) || amount <= 0 || amount > 1000000) {
+        status.textContent = 'Enter a valid amount between GHS 0.01 and GHS 1,000,000.';
+        return;
+      }
+      if (!account) {
+        status.textContent = 'Your account could not be found. Please log in again.';
+        return;
+      }
+      if (amount > account.balance) {
+        status.textContent = 'There are not enough demo points for this withdrawal.';
+        return;
+      }
+      if (!number || !network) {
+        status.textContent = 'Enter the mobile money number and network for your withdrawal.';
+        return;
+      }
+
+      const breakdown = getWithdrawalBreakdown(amount);
+      account.withdrawalMobileMoney = { number, network };
+      saveAccounts(accounts);
+      const queue = getRequestQueue();
+      queue.unshift({
+        id: `req-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        email: account.email,
+        name: account.name,
+        kind: 'withdrawal',
+        amount: Number(breakdown.requestedAmount.toFixed(2)),
+        feeAmount: Number(breakdown.feeAmount.toFixed(2)),
+        netPayout: Number(breakdown.netPayout.toFixed(2)),
+        mobileMoneyName: null,
+        withdrawalNumber: number,
+        withdrawalNetwork: network,
+        note: `User requested a withdrawal. 5% admin fee applied: ${formatPointEquivalent(breakdown.feeAmount)}; net payout: ${formatPointEquivalent(breakdown.netPayout)}.`,
+        status: 'pending',
+        createdAt: Date.now(),
+        reviewedAt: null
+      });
+      saveRequestQueue(queue);
+      renderApp();
+      event.currentTarget.reset();
+      status.textContent = `${formatPointEquivalent(breakdown.requestedAmount)} withdrawal submitted. 5% fee: ${formatPointEquivalent(breakdown.feeAmount)}; net payout: ${formatPointEquivalent(breakdown.netPayout)}. Pending admin approval.`;
+      document.getElementById('moneyStatus').textContent = status.textContent;
+      withdrawalDialog.close();
+    });
+
     document.getElementById('copyReferralBtn').addEventListener('click', async () => {
       const code = document.getElementById('referralCode').textContent;
       const status = document.getElementById('moneyStatus');
@@ -3852,7 +4046,6 @@
       const pages = {
         home: document.getElementById('homePage'),
         jobs: document.getElementById('jobsPage'),
-        rewards: document.getElementById('rewardsPage'),
         task: document.getElementById('taskPage')
       };
 
@@ -3872,18 +4065,19 @@
     dashboardNav.querySelectorAll('[data-dashboard-destination]').forEach((button) => {
       button.addEventListener('click', () => {
         const destination = button.dataset.dashboardDestination;
+        if (destination === 'rewards') {
+          openRewardDialog();
+          return;
+        }
         if (destination === 'task') {
           const account = getCurrentAccount();
           if (!account?.activeJob || account.activeJob.daysPaid >= jobDurationDays) return;
-        }
-        if (destination === 'rewards') {
-          document.getElementById('rewardDialog').close();
         }
         showDashboardPage(destination);
       });
     });
 
-    document.getElementById('rewardsPageSpinBtn').addEventListener('click', spinRewardWheel);
+    document.getElementById('claimDemoSpinBtn').addEventListener('click', claimDemoSpin);
     document.getElementById('startTaskBtn').addEventListener('click', startDailyTask);
     document.getElementById('taskReviewed').addEventListener('change', updateTaskSubmitState);
     document.getElementById('submitTaskBtn').addEventListener('click', submitDailyTask);
