@@ -2230,24 +2230,72 @@
         <p class="activity-disclaimer">Sample entries are illustrative. Account activity is recorded from actions in this browser.</p>
       </section>
 
-      <section class="panel jobs-section" id="jobsSection" aria-labelledby="jobsHeading">
-        <div class="jobs-heading">
-          <div>
-            <p class="jobs-eyebrow">Simulated tiers</p>
-            <div class="panel-header" id="jobsHeading">Choose your demo tier</div>
-          </div>
-          <span class="jobs-heading-note">5 tiers · 360-day simulation</span>
-        </div>
-        <p class="jobs-intro">All fees and earnings are simulated GHS amounts, not cash, and cannot be withdrawn. Each tier simulates one reward per full 24 hours for 360 days. Only one tier can be active at a time.</p>
-        <div class="job-grid" id="jobGrid"></div>
-        <div class="active-job-summary hidden" id="activeJobSummary" role="status" aria-live="polite"></div>
-      </section>
-
       <section class="panel">
         <div class="panel-header">Recent deposits & withdrawals</div>
         <ul class="transactions" id="recentTransactionsList"></ul>
       </section>
       </div>
+
+      <section class="dashboard-page jobs-page hidden" id="jobsPage" aria-labelledby="jobsHeading">
+        <section class="panel jobs-section" id="jobsSection" aria-labelledby="jobsHeading">
+          <div class="jobs-heading">
+            <div>
+              <p class="jobs-eyebrow">Simulated tiers</p>
+              <div class="panel-header" id="jobsHeading">Choose your demo tier</div>
+            </div>
+            <span class="jobs-heading-note">5 tiers · 360-day simulation</span>
+          </div>
+          <p class="jobs-intro">All fees and earnings are simulated GHS amounts, not cash, and cannot be withdrawn. Each tier simulates one reward per full 24 hours for 360 days. Only one tier can be active at a time.</p>
+          <div class="job-grid" id="jobGrid"></div>
+          <div class="active-job-summary hidden" id="activeJobSummary" role="status" aria-live="polite"></div>
+        </section>
+      </section>
+
+      <section class="dashboard-page rewards-page hidden" id="rewardsPage" aria-labelledby="rewardsPageTitle">
+        <div class="task-heading">
+          <div class="task-eyebrow">Prizes</div>
+          <h1 id="rewardsPageTitle">Rewards</h1>
+          <p>Spin for a simulated cash prize and track your latest reward streak without leaving the dashboard.</p>
+        </div>
+        <div class="task-summary" style="grid-template-columns: minmax(0, 1fr);">
+          <div class="task-summary-main">
+            <div class="task-summary-icon">★</div>
+            <div>
+              <strong>Reward spin</strong>
+              <span>Use an earned spin to win a simulated GHS prize.</span>
+            </div>
+          </div>
+        </div>
+        <div class="panel task-workspace" style="padding: 0;">
+          <div class="task-workspace-header" style="padding: 24px 26px 12px;">
+            <div>
+              <div class="task-type">Lucky draw</div>
+              <h2>Spin for your next reward</h2>
+              <p class="task-instructions">Your reward wheel lives on this dedicated page, so it no longer sits on the home screen.</p>
+            </div>
+          </div>
+          <div class="task-action-bar" style="padding-top: 0;">
+            <div class="reward-wheel-wrap" aria-hidden="true" style="margin-top: 4px;">
+              <span class="reward-pointer"></span>
+              <div class="reward-wheel" id="rewardsPageWheel">
+                <span class="reward-wheel-value" style="--label-angle: 22.5deg; --label-counter-angle: -22.5deg;">GHS 5</span>
+                <span class="reward-wheel-value" style="--label-angle: 67.5deg; --label-counter-angle: -67.5deg;">GHS 10</span>
+                <span class="reward-wheel-value" style="--label-angle: 112.5deg; --label-counter-angle: -112.5deg;">GHS 20</span>
+                <span class="reward-wheel-value" style="--label-angle: 157.5deg; --label-counter-angle: -157.5deg;">GHS 50</span>
+                <span class="reward-wheel-value" style="--label-angle: 202.5deg; --label-counter-angle: -202.5deg;">GHS 10</span>
+                <span class="reward-wheel-value" style="--label-angle: 247.5deg; --label-counter-angle: -247.5deg;">GHS 25</span>
+                <span class="reward-wheel-value" style="--label-angle: 292.5deg; --label-counter-angle: -292.5deg;">GHS 100</span>
+                <span class="reward-wheel-value" style="--label-angle: 337.5deg; --label-counter-angle: -337.5deg;">GHS 15</span>
+                <span class="reward-wheel-center"><strong>PRH</strong><small>REWARDS</small></span>
+              </div>
+            </div>
+            <div class="reward-status" id="rewardsPageStatus" role="status" aria-live="polite"></div>
+            <div class="task-controls" style="justify-content: center;">
+              <button class="primary-btn reward-spin-btn" id="rewardsPageSpinBtn" type="button">Spin</button>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section class="dashboard-page task-page hidden" id="taskPage" aria-labelledby="taskPageTitle">
         <div class="task-heading">
@@ -2844,13 +2892,29 @@
         : `Task ${nextCompleted} of ${plan.count} complete. ${formatPointEquivalent(plan.amount)} added to your balance.`;
     }
 
+    function getRewardUi() {
+      const rewardsPageVisible = !document.getElementById('rewardsPage').classList.contains('hidden');
+      const modalOpen = document.getElementById('rewardDialog').open;
+      const wheel = rewardsPageVisible
+        ? document.getElementById('rewardsPageWheel')
+        : (modalOpen ? document.getElementById('rewardWheel') : document.getElementById('rewardWheel') || document.getElementById('rewardsPageWheel'));
+      const status = rewardsPageVisible
+        ? document.getElementById('rewardsPageStatus')
+        : (modalOpen ? document.getElementById('rewardStatus') : document.getElementById('rewardStatus') || document.getElementById('rewardsPageStatus'));
+      const button = rewardsPageVisible
+        ? document.getElementById('rewardsPageSpinBtn')
+        : (modalOpen ? document.getElementById('spinRewardBtn') : document.getElementById('spinRewardBtn') || document.getElementById('rewardsPageSpinBtn'));
+      return { wheel, status, button };
+    }
+
     function openRewardDialog() {
       const account = getCurrentAccount();
       const spinCredits = Math.max(0, Number(account?.spinCredits) || 0);
-      document.getElementById('rewardStatus').textContent = spinCredits
+      const { status, button } = getRewardUi();
+      status.textContent = spinCredits
         ? `You have ${spinCredits} spin${spinCredits === 1 ? '' : 's'} available.`
         : 'Earn a spin when 3 people you referred join a job, or when an admin grants you one.';
-      document.getElementById('spinRewardBtn').disabled = spinCredits === 0 || isRewardSpinning;
+      button.disabled = spinCredits === 0 || isRewardSpinning;
       document.getElementById('rewardDialog').showModal();
     }
 
@@ -2859,20 +2923,19 @@
       const session = getSession();
       const accounts = getAccounts();
       const account = accounts.find((savedAccount) => savedAccount.email === (session.email || '').toLowerCase());
-      const status = document.getElementById('rewardStatus');
-      const spinButton = document.getElementById('spinRewardBtn');
+      const { status, button, wheel } = getRewardUi();
       if (!account) {
         status.textContent = 'Your account could not be found. Please log in again.';
         return;
       }
       if ((Number(account.spinCredits) || 0) < 1) {
         status.textContent = 'You do not have an available spin. Refer 3 people who join a job, or ask an admin to grant you one.';
-        spinButton.disabled = true;
+        button.disabled = true;
         return;
       }
 
       isRewardSpinning = true;
-      spinButton.disabled = true;
+      button.disabled = true;
       status.textContent = 'Spinning...';
       const rewardIndex = Math.floor(Math.random() * rewardAmounts.length);
       const reward = rewardAmounts[rewardIndex];
@@ -2884,7 +2947,6 @@
       const spinDuration = 5.2 + Math.random() * 2.2;
       const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const finalRotation = rewardWheelRotation + fullTurns * 360 + alignmentRotation;
-      const wheel = document.getElementById('rewardWheel');
       wheel.style.setProperty('--wheel-spin-duration', `${spinDuration}s`);
       if (reducedMotion) wheel.style.setProperty('--wheel-spin-duration', '0.01ms');
       wheel.style.transform = `rotate(${finalRotation}deg)`;
@@ -2901,7 +2963,7 @@
         saveAccounts(accounts);
         recordRewardActivity(account, reward, Date.now());
         isRewardSpinning = false;
-        spinButton.disabled = account.spinCredits < 1;
+        button.disabled = account.spinCredits < 1;
         renderJobActivity();
         document.getElementById('balanceValue').textContent = formatBalance(account.balance);
         status.textContent = `You won ${formatPointEquivalent(reward)}. It has been added to your balance. ${account.spinCredits} spin${account.spinCredits === 1 ? '' : 's'} remaining.`;
@@ -3782,31 +3844,42 @@
 
     applyReferralCodeFromUrl();
 
+    function showDashboardPage(destination) {
+      const pages = {
+        home: document.getElementById('homePage'),
+        jobs: document.getElementById('jobsPage'),
+        rewards: document.getElementById('rewardsPage'),
+        task: document.getElementById('taskPage')
+      };
+
+      dashboardNav.querySelectorAll('button').forEach((navButton) => {
+        navButton.toggleAttribute('aria-current', navButton.dataset.dashboardDestination === destination);
+      });
+
+      Object.entries(pages).forEach(([pageKey, element]) => {
+        element.classList.toggle('hidden', pageKey !== destination);
+      });
+
+      if (destination === 'home' || destination === 'jobs' || destination === 'task' || destination === 'rewards') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
     dashboardNav.querySelectorAll('[data-dashboard-destination]').forEach((button) => {
       button.addEventListener('click', () => {
         const destination = button.dataset.dashboardDestination;
-        dashboardNav.querySelectorAll('button').forEach((navButton) => navButton.removeAttribute('aria-current'));
-        if (destination !== 'rewards') button.setAttribute('aria-current', 'page');
-        if (destination === 'home') {
-          document.getElementById('homePage').classList.remove('hidden');
-          document.getElementById('taskPage').classList.add('hidden');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else if (destination === 'jobs') {
-          document.getElementById('homePage').classList.remove('hidden');
-          document.getElementById('taskPage').classList.add('hidden');
-          document.getElementById('jobsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        } else if (destination === 'task') {
+        if (destination === 'task') {
           const account = getCurrentAccount();
           if (!account?.activeJob || account.activeJob.daysPaid >= jobDurationDays) return;
-          document.getElementById('homePage').classList.add('hidden');
-          document.getElementById('taskPage').classList.remove('hidden');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        } else {
-          openRewardDialog();
         }
+        if (destination === 'rewards') {
+          document.getElementById('rewardDialog').close();
+        }
+        showDashboardPage(destination);
       });
     });
 
+    document.getElementById('rewardsPageSpinBtn').addEventListener('click', spinRewardWheel);
     document.getElementById('startTaskBtn').addEventListener('click', startDailyTask);
     document.getElementById('taskReviewed').addEventListener('change', updateTaskSubmitState);
     document.getElementById('submitTaskBtn').addEventListener('click', submitDailyTask);
