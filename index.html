@@ -1082,7 +1082,7 @@
 
     .job-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+      grid-template-columns: repeat(5, minmax(0, 1fr));
       gap: 14px;
       padding: 20px 24px 24px;
     }
@@ -1778,6 +1778,7 @@
       .asset-showcase { grid-template-columns: 1fr; gap: 18px; }
       .asset-showcase-art { height: 210px; }
       .dashboard-tools { grid-template-columns: 1fr; gap: 8px; }
+      .job-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .topbar { padding: 15px 24px; }
       .welcome-row { flex-direction: column; align-items: flex-start; }
       .balance-card { margin-bottom: 16px; }
@@ -2142,7 +2143,7 @@
           <p class="asset-showcase-kicker">Explore asset classes</p>
           <h2 id="assetSlideTitle" aria-live="polite">Gold</h2>
           <p class="asset-showcase-description" id="assetSlideDescription">A timeless store of value, often considered as part of a diversified portfolio.</p>
-          <p class="asset-showcase-note">Illustrative assets only. This showcase is not an offer or investment advice.</p>
+          <p class="asset-showcase-note"></p>
           <div class="asset-carousel-controls" aria-label="Asset showcase controls">
             <button type="button" id="assetSlidePrevious" aria-label="Previous asset">‹</button>
             <div class="asset-carousel-dots" role="group" aria-label="Choose an asset">
@@ -2278,7 +2279,7 @@
       <section class="panel live-activity" aria-labelledby="activityHeading">
         <div class="panel-header" id="activityHeading">Live activity</div>
         <ul class="activity-feed" id="jobActivityFeed" aria-live="polite" aria-relevant="additions text"></ul>
-        <p class="activity-disclaimer">Sample entries are illustrative. Account activity is recorded from actions in this browser.</p>
+        <p class="activity-disclaimer"></p>
       </section>
 
       <section class="panel">
@@ -2296,7 +2297,7 @@
         <button class="cancel-btn" id="closeRechargeDialogBtn" type="button" style="width: 100%; margin-bottom: 18px;">Close</button>
         <div class="recharge-destination">
           <span>Send payment to</span>
-          <strong id="rechargeDestinationNumber">Number to be provided</strong>
+          <strong id="rechargeDestinationNumber">0537353122 <p>Emmanuel Sam</p></strong>
         </div>
         <form class="panel recharge-form-panel" id="rechargeForm">
           <div class="panel-header">Recharge</div>
@@ -2364,12 +2365,12 @@
         <section class="panel jobs-section" id="jobsSection" aria-labelledby="jobsHeading">
           <div class="jobs-heading">
             <div>
-              <p class="jobs-eyebrow">Jobs and internship</p>
-              <div class="panel-header" id="jobsHeading">Choose a job or internship</div>
+              <p class="jobs-eyebrow"></p>
+              <div class="panel-header" id="jobsHeading">Choose a tier</div>
             </div>
-            <span class="jobs-heading-note">5 job options · 1 free internship</span>
+            <span class="jobs-heading-note">5 tiers · 360-day </span>
           </div>
-          <p class="jobs-intro">Choose one of the existing job options or the single free 2-day internship. Rewards accumulate in your browser-stored project balance after each full 24 hours. These GHS amounts are not real cash and cannot be withdrawn. The internship is free and accumulates GHS 5 per full 24 hours for 2 days.</p>
+          <p class="jobs-intro"></p>
           <div class="job-grid" id="jobGrid"></div>
           <div class="active-job-summary hidden" id="activeJobSummary" role="status" aria-live="polite"></div>
         </section>
@@ -2379,24 +2380,24 @@
         <div class="task-heading">
           <div class="task-eyebrow">Your daily progress</div>
           <h1 id="taskPageTitle">Daily task</h1>
-          <p>Complete reading tasks during your active job or internship to earn rewards.</p>
+          <p>Complete reading tasks to earn GHS rewards. These amounts are not cash and cannot be withdrawn.</p>
         </div>
         <div class="task-summary">
           <div class="task-summary-main">
             <div class="task-summary-icon" aria-hidden="true">✓</div>
             <div>
-            <strong id="taskJobLabel">No active job or internship</strong>
-            <span id="taskRewardLabel">Choose an active job or internship to see today’s task.</span>
+            <strong id="taskJobLabel">No active job</strong>
+            <span id="taskRewardLabel">Choose an active job to see today’s task.</span>
             </div>
           </div>
           <div class="task-points-wrap">
-            <span class="task-points-label">Task rewards accumulated</span>
+            <span class="task-points-label">Task points earned</span>
             <div class="task-points" id="taskPointsTotal">GHS 0.00</div>
           </div>
           <div class="task-progress-wrap">
             <div class="task-progress-heading">
               <span>Today’s task progress</span>
-              <strong id="taskProgressLabel">Choose a job or internship to begin</strong>
+              <strong id="taskProgressLabel">Choose a job to begin</strong>
             </div>
             <progress class="task-progress" id="taskProgress" max="1" value="0" aria-label="Daily task progress"></progress>
           </div>
@@ -2406,7 +2407,7 @@
             <div>
               <div class="task-type" id="taskType">Reading room</div>
               <h2 id="taskTitle">Your reading task</h2>
-              <p class="task-instructions" id="taskInstructions">Your daily task is based on your active job or internship.</p>
+              <p class="task-instructions" id="taskInstructions">Your daily task is based on your active job.</p>
             </div>
             <div class="task-reading-badge"><span class="task-reading-mark" aria-hidden="true"></span><span>10 sec</span> focused read</div>
           </div>
@@ -2422,7 +2423,7 @@
               <button class="action-btn secondary" id="submitTaskBtn" type="button" disabled>Submit task</button>
             </div>
             <p class="task-status" id="taskStatus" role="status" aria-live="polite"></p>
-            <p class="task-note">Practice task content and rewards are for this class project only. Displayed GHS amounts are stored in this browser and cannot be withdrawn as cash.</p>
+            <p class="task-note">. </p>
           </div>
         </section>
       </section>
@@ -2469,7 +2470,7 @@
 
   <dialog class="money-dialog reward-dialog" id="rewardDialog" aria-labelledby="rewardDialogTitle">
     <h2 id="rewardDialogTitle">Reward spin</h2>
-    <p>Use an earned spin to win a project GHS reward. It is not real cash and cannot be withdrawn.</p>
+    <p>Use an earned spin to win a  reward.</p>
     <div class="reward-wheel-wrap" aria-hidden="true">
       <span class="reward-pointer"></span>
       <div class="reward-wheel" id="rewardWheel">
@@ -2539,12 +2540,12 @@
 
   <dialog class="money-dialog" id="jobConfirmDialog" aria-labelledby="jobConfirmTitle">
     <form id="jobConfirmForm">
-      <h2 id="jobConfirmTitle">Confirm selection</h2>
+      <h2 id="jobConfirmTitle">Confirm job</h2>
       <p id="jobConfirmDetails"></p>
       <div class="dashboard-status" id="jobConfirmStatus" role="status" aria-live="polite"></div>
       <div class="dialog-actions">
         <button class="cancel-btn" id="cancelJobBtn" type="button">Cancel</button>
-        <button class="primary-btn" type="submit">Confirm</button>
+        <button class="primary-btn" type="submit">Confirm job</button>
       </div>
     </form>
   </dialog>
@@ -2573,11 +2574,10 @@
       { id: 4, fee: 3000, dailyIncome: 100 },
       { id: 5, fee: 10000, dailyIncome: 500 }
     ];
-    const internshipOption = { id: 0, type: 'internship', fee: 0, dailyIncome: 5 };
     const jobDurationDays = 360;
-    const internshipDurationDays = 2;
     const dayInMilliseconds = 24 * 60 * 60 * 1000;
     const rewardAmounts = [5, 10, 20, 50, 10, 25, 100, 15];
+    const rewardWeights = [40, 25, 12, 2, 25, 5, 1, 20];
     let isRewardSpinning = false;
     let rewardWheelRotation = 0;
     let taskCountdownInterval = null;
@@ -2590,16 +2590,14 @@
       2: { count: 6, amount: 2 },
       3: { count: 10, amount: 4 },
       4: { count: 10, amount: 10 },
-      5: { count: 20, amount: 25 },
-      6: { count: 5, amount: 1 }
+      5: { count: 20, amount: 25 }
     };
     const taskPrompts = {
       1: { type: 'Message review', title: 'A note from the reading desk', instructions: 'Read this short message and review it for clarity.', passage: 'Hello Nana, your book order is ready for pickup at the front desk. Please bring your confirmation note when you arrive.' },
       2: { type: 'Proofreading', title: 'A page before publication', instructions: 'Read the passage and check that the sentence reads clearly.', passage: 'The old library stood beside the river, its windows catching the last light of the afternoon. Inside, every shelf held a different story waiting to be discovered.' },
       3: { type: 'Editorial review', title: 'The editor’s message', instructions: 'Review this message as if it were being prepared for publication.', passage: 'Dear readers, we are delighted to share the first chapter of our new collection. Each story was selected for its warmth, imagination, and thoughtful view of everyday life.' },
       4: { type: 'Manuscript review', title: 'A passage from the manuscript', instructions: 'Read the excerpt and confirm when you have finished reviewing it.', passage: 'Mara opened the notebook and found a map drawn in blue ink. The lines crossed the hills, followed the coastline, and ended at a small mark beside the lighthouse.' },
-      5: { type: 'Final proof', title: 'Final page review', instructions: 'Read this final proof excerpt before marking the review complete.', passage: 'At sunrise, the town began to stir. Bakers lifted warm loaves from their ovens, shopkeepers opened their doors, and the market filled with the sound of neighbors greeting one another.' },
-      6: { type: 'Message review', title: 'A note from the reading desk', instructions: 'Read this short message and review it for clarity.', passage: 'Hello Nana, your book order is ready for pickup at the front desk. Please bring your confirmation note when you arrive.' }
+      5: { type: 'Final proof', title: 'Final page review', instructions: 'Read this final proof excerpt before marking the review complete.', passage: 'At sunrise, the town began to stir. Bakers lifted warm loaves from their ovens, shopkeepers opened their doors, and the market filled with the sound of neighbors greeting one another.' }
     };
     const dailyTaskPassages = [
       'The editor placed the revised chapter beside the window to check the final paragraph in daylight.',
@@ -2671,7 +2669,7 @@
       }
     }
 
-    function recordJobActivity(account, jobId, action, createdAt, optionType = 'job') {
+    function recordJobActivity(account, jobId, action, createdAt) {
       const activity = getJobActivity();
       activity.unshift({
         id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
@@ -2679,7 +2677,6 @@
         email: account.email,
         name: account.name,
         jobId,
-        optionType,
         action,
         createdAt
       });
@@ -2776,9 +2773,7 @@
         if (!account.activeJob) return;
         const startedAt = Number(account.activeJob.startedAt) || Date.now();
         const alreadyRecorded = activity.some((entry) =>
-          entry.email === account.email && entry.jobId === account.activeJob.id &&
-          (entry.optionType || 'job') === (isInternship(account.activeJob) ? 'internship' : 'job') &&
-          entry.createdAt === startedAt
+          entry.email === account.email && entry.jobId === account.activeJob.id && entry.createdAt === startedAt
         );
         if (!alreadyRecorded) {
           activity.push({
@@ -2787,7 +2782,6 @@
             email: account.email,
             name: account.name,
             jobId: account.activeJob.id,
-            optionType: isInternship(account.activeJob) ? 'internship' : 'job',
             action: 'join',
             createdAt: startedAt
           });
@@ -2829,9 +2823,7 @@
         message.textContent = `${entry.name || 'A member'} earned ${formatPointEquivalent(entry.amount)} from referring`;
       } else {
         const verb = entry.action === 'upgrade' ? 'upgraded to' : 'joined';
-        message.textContent = entry.optionType === 'internship'
-          ? `${entry.name || 'A member'} ${verb} the free internship`
-          : `${entry.name || 'A member'} ${verb} Job ${entry.jobId}`;
+        message.textContent = `${entry.name || 'A member'} ${verb} Job ${entry.jobId}`;
       }
       const time = document.createElement('time');
       time.dateTime = new Date(entry.createdAt).toISOString();
@@ -2887,17 +2879,16 @@
     }
 
     function renderTask(account) {
-      const activeJob = account.activeJob && account.activeJob.daysPaid < getDurationDays(account.activeJob)
+      const activeJob = account.activeJob && account.activeJob.daysPaid < jobDurationDays
         ? account.activeJob
         : null;
-      const taskId = activeJob ? getTaskId(activeJob) : null;
-      const task = activeJob ? taskPrompts[taskId] : null;
-      const plan = activeJob ? dailyTaskPlans[taskId] : null;
-      const completed = activeJob ? Math.min(getCompletedTaskCount(account, taskId), plan.count) : 0;
+      const task = activeJob ? taskPrompts[activeJob.id] : null;
+      const plan = activeJob ? dailyTaskPlans[activeJob.id] : null;
+      const completed = activeJob ? Math.min(getCompletedTaskCount(account, activeJob.id), plan.count) : 0;
       const dailyTotal = plan ? plan.count * plan.amount : 0;
       const dailyEarned = plan ? completed * plan.amount : 0;
       const allTasksComplete = !!plan && completed >= plan.count;
-      activeTaskJobId = taskId;
+      activeTaskJobId = activeJob?.id || null;
 
       const pointTotal = Number(account.demoTaskPoints) || 0;
       document.getElementById('taskPointsTotal').textContent = formatBalance(pointTotal);
@@ -2906,19 +2897,17 @@
       taskProgress.value = completed;
       document.getElementById('taskProgressLabel').textContent = plan
         ? `${completed} of ${plan.count} tasks`
-        : 'Choose an internship to begin';
-      document.getElementById('taskJobLabel').textContent = activeJob
-        ? isInternship(activeJob) ? 'Internship daily tasks' : `Job ${activeJob.id} daily tasks`
-        : 'No active job or internship';
+        : 'Choose a job to begin';
+      document.getElementById('taskJobLabel').textContent = activeJob ? `Job ${activeJob.id} daily tasks` : 'No active job';
       dashboardNav.querySelector('[data-dashboard-destination="task"]').disabled = !activeJob;
       document.getElementById('taskRewardLabel').textContent = activeJob
         ? `Task ${allTasksComplete ? plan.count : completed + 1} of ${plan.count} · ${formatPointEquivalent(plan.amount)} per task · ${formatPointEquivalent(dailyEarned)} of ${formatPointEquivalent(dailyTotal)} earned today`
-        : 'Choose an active job or internship to unlock a daily task.';
+        : 'Choose an active job to unlock a daily task.';
       document.getElementById('taskType').textContent = task?.type || 'Reading room';
       document.getElementById('taskTitle').textContent = task?.title || 'Your reading task';
       document.getElementById('taskInstructions').textContent = activeJob
         ? `${task.instructions} This is task ${Math.min(completed + 1, plan.count)} of ${plan.count} for today.`
-        : 'An active job or internship is required to start a daily task.';
+        : 'An active job is required to start a daily task.';
       document.getElementById('taskPassage').textContent = task
         ? `Task ${Math.min(completed + 1, plan.count)}: ${dailyTaskPassages[completed % dailyTaskPassages.length]}`
         : '';
@@ -2930,7 +2919,7 @@
       document.getElementById('taskCountdown').textContent = allTasksComplete ? 'Daily tasks complete' : 'Ready when you are';
       document.getElementById('taskStatus').textContent = allTasksComplete
         ? `All ${plan.count} tasks complete. You earned ${formatPointEquivalent(dailyTotal)} today. Come back tomorrow for another set.`
-        : activeJob ? '' : 'You need an active job or internship before starting a task.';
+        : activeJob ? '' : 'You need an active job before starting a task.';
     }
 
     function startDailyTask() {
@@ -2979,9 +2968,8 @@
       const accounts = getAccounts();
       const account = getCurrentAccount(accounts);
       const status = document.getElementById('taskStatus');
-      if (!account || !activeTaskJobId || getTaskId(account.activeJob) !== activeTaskJobId ||
-        account.activeJob.daysPaid >= getDurationDays(account.activeJob)) {
-        status.textContent = 'Your active job or internship could not be verified. Refresh and try again.';
+      if (!account || !activeTaskJobId || account.activeJob?.id !== activeTaskJobId) {
+        status.textContent = 'Your active job could not be verified. Refresh and try again.';
         return;
       }
       updateTaskCountdown();
@@ -3024,7 +3012,7 @@
       document.getElementById('claimDemoSpinBtn').classList.toggle('hidden', !account || account.demoSpinClaimed === true);
       status.textContent = spinCredits
         ? `You have ${spinCredits} spin${spinCredits === 1 ? '' : 's'} available.`
-        : 'Earn a spin when 3 people you referred join a job or internship, or when an admin grants you one.';
+        : 'Earn a spin when 3 people you referred join a job, or when an admin grants you one.';
       button.disabled = spinCredits === 0 || isRewardSpinning;
     }
 
@@ -3062,7 +3050,7 @@
         return;
       }
       if ((Number(account.spinCredits) || 0) < 1) {
-        status.textContent = 'You do not have an available spin. Refer 3 people who join a job or internship, or ask an admin to grant you one.';
+        status.textContent = 'You do not have an available spin. Refer 3 people who join a job, or ask an admin to grant you one.';
         button.disabled = true;
         return;
       }
@@ -3070,7 +3058,11 @@
       isRewardSpinning = true;
       button.disabled = true;
       status.textContent = 'Spinning...';
-      const rewardIndex = Math.floor(Math.random() * rewardAmounts.length);
+      let rewardRoll = Math.random() * rewardWeights.reduce((total, weight) => total + weight, 0);
+      const rewardIndex = rewardWeights.findIndex((weight) => {
+        rewardRoll -= weight;
+        return rewardRoll < 0;
+      });
       const reward = rewardAmounts[rewardIndex];
       const centerAngle = rewardIndex * 45 + 22.5;
       const targetAngle = (360 - centerAngle + 360) % 360;
@@ -3175,6 +3167,48 @@
 
     function formatPointEquivalent(points) {
       return formatBalance(Number(points));
+    }
+
+    function getReferralCommissionBreakdown(jobFee) {
+      const totalCommission = Number(jobFee) * 0.5;
+      const levelA = Number((totalCommission * 0.5).toFixed(2));
+      const levelB = Number((totalCommission * 0.3).toFixed(2));
+      const levelC = Number((totalCommission * 0.2).toFixed(2));
+      return {
+        total: Number((levelA + levelB + levelC).toFixed(2)),
+        levels: [
+          { label: 'Level A', amount: levelA },
+          { label: 'Level B', amount: levelB },
+          { label: 'Level C', amount: levelC }
+        ]
+      };
+    }
+
+    function applyReferralRewards(account, jobFee, accounts = getAccounts()) {
+      if (account.referralRewardPaid) {
+        return { total: 0, levels: [] };
+      }
+
+      const referralPeople = [];
+      let currentEmail = account.referredBy || null;
+      let currentAccount = currentEmail ? accounts.find((candidate) => candidate.email === currentEmail) : null;
+
+      while (currentAccount && referralPeople.length < 3) {
+        referralPeople.push(currentAccount);
+        currentEmail = currentAccount.referredBy || null;
+        currentAccount = currentEmail ? accounts.find((candidate) => candidate.email === currentEmail) : null;
+      }
+
+      const breakdown = getReferralCommissionBreakdown(jobFee);
+      referralPeople.forEach((referrer, index) => {
+        const level = breakdown.levels[index];
+        if (!level) return;
+        referrer.balance = Number((Number(referrer.balance || 0) + Number(level.amount)).toFixed(2));
+      });
+
+      account.referralRewardPaid = true;
+      saveAccounts(accounts);
+      return breakdown;
     }
 
     function updateBalanceDisplay(points) {
@@ -3316,78 +3350,12 @@
     });
     updateAssetShowcasePauseButton();
 
-    function isInternship(job) {
-      return job?.type === 'internship' || (!job?.type && Number(job?.fee) === 0);
-    }
-
-    function getDurationDays(job) {
-      return isInternship(job) ? internshipDurationDays : jobDurationDays;
-    }
-
-    function getTaskId(job) {
-      if (!job) return null;
-      return isInternship(job) ? 6 : job.id;
-    }
-
-    function getJobOption(id) {
-      return Number(id) === internshipOption.id
-        ? internshipOption
-        : jobOptions.find((option) => option.id === Number(id));
-    }
-
-    function isCurrentOption(activeJob, option) {
-      return isInternship(activeJob) === isInternship(option) &&
-        (isInternship(option) || activeJob.id === option.id);
-    }
-
-    function getReferralCommissionBreakdown(jobFee) {
-      const totalCommission = Number(jobFee) * 0.5;
-      const levelA = Number((totalCommission * 0.5).toFixed(2));
-      const levelB = Number((totalCommission * 0.3).toFixed(2));
-      const levelC = Number((totalCommission * 0.2).toFixed(2));
-      return {
-        total: Number((levelA + levelB + levelC).toFixed(2)),
-        levels: [
-          { label: 'Level A', amount: levelA },
-          { label: 'Level B', amount: levelB },
-          { label: 'Level C', amount: levelC }
-        ]
-      };
-    }
-
-    function applyReferralRewards(account, jobFee, accounts = getAccounts()) {
-      if (account.referralRewardPaid) {
-        return { total: 0, levels: [] };
-      }
-
-      const referralPeople = [];
-      let currentEmail = account.referredBy || null;
-      let currentAccount = currentEmail ? accounts.find((candidate) => candidate.email === currentEmail) : null;
-
-      while (currentAccount && referralPeople.length < 3) {
-        referralPeople.push(currentAccount);
-        currentEmail = currentAccount.referredBy || null;
-        currentAccount = currentEmail ? accounts.find((candidate) => candidate.email === currentEmail) : null;
-      }
-
-      const breakdown = getReferralCommissionBreakdown(jobFee);
-      referralPeople.forEach((referrer, index) => {
-        const level = breakdown.levels[index];
-        if (!level) return;
-        referrer.balance = Number((Number(referrer.balance || 0) + Number(level.amount)).toFixed(2));
-      });
-
-      account.referralRewardPaid = true;
-      saveAccounts(accounts);
-      return breakdown;
-    }
-
     function processJobEarnings(account) {
       const job = account.activeJob;
-      if (!job || job.daysPaid >= getDurationDays(job)) return false;
+      if (!job || job.daysPaid >= jobDurationDays) return false;
 
       const elapsedPeriods = Math.floor((Date.now() - job.lastPayoutAt) / dayInMilliseconds);
-      const payoutDays = Math.min(elapsedPeriods, getDurationDays(job) - job.daysPaid);
+      const payoutDays = Math.min(elapsedPeriods, jobDurationDays - job.daysPaid);
       if (payoutDays <= 0) return false;
 
       const earnings = payoutDays * job.dailyIncome;
@@ -3400,59 +3368,47 @@
 
     function renderJobOptions(account) {
       const activeJob = account.activeJob;
-      const hasActiveJob = !!activeJob && activeJob.daysPaid < getDurationDays(activeJob);
+      const hasActiveJob = !!activeJob && activeJob.daysPaid < jobDurationDays;
       const jobGrid = document.getElementById('jobGrid');
       const tierNames = ['Starter', 'Core', 'Growth', 'Pro', 'Premier'];
-      const options = [...jobOptions, internshipOption];
-      jobGrid.innerHTML = options.map((option) => {
-        const internship = isInternship(option);
-        const durationDays = getDurationDays(option);
-        const totalIncome = option.dailyIncome * durationDays;
-        const isCurrent = hasActiveJob && (
-          internship ? isInternship(activeJob) : !isInternship(activeJob) && option.id === activeJob.id
-        );
-        const isUpgrade = hasActiveJob && !internship && !isInternship(activeJob) && option.id > activeJob.id;
-        const isUnavailable = hasActiveJob && !isCurrent && !isUpgrade;
-        const feeDue = isUpgrade ? option.fee - activeJob.fee : option.fee;
-        const buttonText = isCurrent
-          ? internship ? 'Internship in progress' : 'Current job'
-          : isUnavailable
-            ? internship ? 'Unavailable while job is active' : 'Lower tier unavailable'
-            : isUpgrade
-              ? `Upgrade (+${formatPointEquivalent(feeDue)})`
-              : internship ? 'Start free internship' : `Choose Job ${option.id}`;
-        const heading = internship ? 'Internship' : `Job ${option.id}`;
-        const tier = internship ? 'Free program' : tierNames[option.id - 1];
-        const feeLabel = internship ? 'Free' : formatPointEquivalent(option.fee);
-        const totals = internship
-          ? `<div class="job-detail"><dt>Duration</dt><dd>${durationDays} days</dd></div>
-             <div class="job-detail is-net"><dt>Total accumulated reward</dt><dd>${formatPointEquivalent(totalIncome)}</dd></div>`
-          : `<div class="job-detail"><dt>${durationDays}-day total</dt><dd>${formatPointEquivalent(totalIncome)}</dd></div>
-             <div class="job-detail is-net"><dt>Net after fee</dt><dd>${formatPointEquivalent(totalIncome - option.fee)}</dd></div>`;
+      jobGrid.innerHTML = jobOptions.map((job) => {
+        const totalIncome = job.dailyIncome * jobDurationDays;
+        const netDifference = totalIncome - job.fee;
+        const isUpgrade = hasActiveJob && job.id > activeJob.id;
+        const isUnavailable = hasActiveJob && !isUpgrade;
+        const isCurrent = hasActiveJob && job.id === activeJob.id;
+        const feeDue = isUpgrade ? job.fee - activeJob.fee : job.fee;
+        const buttonText = hasActiveJob
+          ? isUpgrade
+            ? `Upgrade (+${formatPointEquivalent(feeDue)})`
+            : job.id === activeJob.id ? 'Current job' : 'Lower tier unavailable'
+          : `Choose Job ${job.id}`;
         return `
           <article class="job-option${isCurrent ? ' is-current' : ''}${isUnavailable ? ' is-unavailable' : ''}">
             <div class="job-card-heading">
-              <span class="job-card-number" aria-hidden="true">${String(internship ? 6 : option.id).padStart(2, '0')}</span>
+              <span class="job-card-number" aria-hidden="true">${String(job.id).padStart(2, '0')}</span>
               <div>
-                <p class="job-card-tier">${tier}</p>
-                <h3>${heading}</h3>
+                <p class="job-card-tier">${tierNames[job.id - 1]}</p>
+                <h3>Job ${job.id}</h3>
               </div>
               ${isCurrent ? '<span class="job-current-badge">Active</span>' : ''}
             </div>
             <div class="job-daily-reward">
               <span>Daily reward</span>
-              <strong>${formatPointEquivalent(option.dailyIncome)}</strong>
+              <strong>${formatPointEquivalent(job.dailyIncome)}</strong>
               <small>Per full 24 hours</small>
             </div>
             <dl>
-              <div class="job-detail"><dt>Fee</dt><dd>${feeLabel}</dd></div>
-              ${totals}
+              <div class="job-detail"><dt>Fee</dt><dd>${formatPointEquivalent(job.fee)}</dd></div>
+              <div class="job-detail"><dt>${jobDurationDays}-day total</dt><dd>${formatPointEquivalent(totalIncome)}</dd></div>
+              <div class="job-detail is-net"><dt>Net after fee</dt><dd>${formatPointEquivalent(netDifference)}</dd></div>
             </dl>
-            <button class="action-btn ${isUnavailable ? 'secondary' : 'primary'}" type="button" data-job-id="${option.id}" aria-label="${buttonText}" ${isUnavailable || isCurrent ? 'disabled' : ''}>
+            <button class="action-btn ${isUnavailable ? 'secondary' : 'primary'}" type="button" data-job-id="${job.id}" aria-label="${buttonText} — Job ${job.id}, ${tierNames[job.id - 1]}" ${isUnavailable ? 'disabled' : ''}>
               ${buttonText}
             </button>
           </article>`;
       }).join('');
+
       jobGrid.querySelectorAll('[data-job-id]').forEach((button) => {
         button.addEventListener('click', () => openJobConfirm(Number(button.dataset.jobId)));
       });
@@ -3464,58 +3420,47 @@
         return;
       }
 
-      const durationDays = getDurationDays(activeJob);
-      const internship = isInternship(activeJob);
-      const complete = activeJob.daysPaid >= durationDays;
-      const activeOption = internship ? internshipOption : jobOptions.find((option) => option.id === activeJob.id);
+      const activeOption = jobOptions.find((job) => job.id === activeJob.id);
+      const complete = activeJob.daysPaid >= jobDurationDays;
       summary.classList.remove('hidden');
-      summary.innerHTML = `<strong>${complete ? 'Completed' : 'Active'}: ${internship ? 'Internship' : `Job ${activeJob.id}`}</strong>
+      summary.innerHTML = `<strong>${complete ? 'Completed' : 'Active'}: Job ${activeJob.id}</strong>
         <p>${complete
-          ? internship
-            ? `The ${durationDays}-day internship is complete. You can start the free internship again.`
-            : `This job is complete. You can choose another job or the free internship.`
-          : `Day ${activeJob.daysPaid} of ${durationDays}. ${formatPointEquivalent(activeOption.dailyIncome)} is added per full 24 hours; ${formatPointEquivalent(activeJob.incomePaid)} accumulated so far. Any rewards due are added to your balance when you next open the dashboard.`}</p>`;
+          ? `Earned ${formatPointEquivalent(activeJob.incomePaid)} over ${jobDurationDays} days. You can now choose another tier.`
+          : `Day ${activeJob.daysPaid} of ${jobDurationDays}. ${formatPointEquivalent(activeOption.dailyIncome)} per full 24 hours; ${formatPointEquivalent(activeJob.incomePaid)} earned so far. Upgrades deduct from your balance. Any due rewards are added when you next open the dashboard.`}</p>`;
     }
 
     function openJobConfirm(jobId) {
-      const job = getJobOption(jobId);
+      const job = jobOptions.find((option) => option.id === jobId);
       const session = getSession();
       const accounts = getAccounts();
       const account = accounts.find((savedAccount) => savedAccount.email === (session.email || '').toLowerCase());
       const details = document.getElementById('jobConfirmDetails');
       const confirmButton = document.querySelector('#jobConfirmForm button[type="submit"]');
       const status = document.getElementById('jobConfirmStatus');
-      if (!job) {
-        status.textContent = 'The selected job or internship could not be found. Refresh and try again.';
-        confirmButton.disabled = true;
-        document.getElementById('jobConfirmDialog').showModal();
-        return;
-      }
-      const activeJob = account?.activeJob && account.activeJob.daysPaid < getDurationDays(account.activeJob)
+      const totalIncome = job.dailyIncome * jobDurationDays;
+      const netDifference = totalIncome - job.fee;
+      const activeJob = account?.activeJob && account.activeJob.daysPaid < jobDurationDays
         ? account.activeJob
         : null;
+      const isUpgrade = !!activeJob && job.id > activeJob.id;
+      const feeDue = isUpgrade ? job.fee - activeJob.fee : job.fee;
 
       document.getElementById('jobConfirmForm').dataset.jobId = String(job.id);
-      const internship = isInternship(job);
-      const isUpgrade = !!activeJob && !internship && !isInternship(activeJob) && job.id > activeJob.id;
-      const feeDue = isUpgrade ? job.fee - activeJob.fee : job.fee;
-      const invalidSelection = !!activeJob && !isUpgrade;
-      details.textContent = internship
-        ? `This is the single free internship option. No payment is required. ${formatPointEquivalent(job.dailyIncome)} is added to your project balance per full 24 hours for ${internshipDurationDays} days (${formatPointEquivalent(job.dailyIncome * internshipDurationDays)} accumulated total).`
-        : isUpgrade
-          ? `Upgrade from Job ${activeJob.id} to Job ${job.id}: ${formatPointEquivalent(feeDue)} fee difference. It provides ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days.`
-          : `Job ${job.id} costs ${formatPointEquivalent(job.fee)} upfront. It provides ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days.`;
-      status.textContent = !account
-        ? 'Your account could not be found. Please log in again.'
-        : invalidSelection
-          ? isCurrentOption(activeJob, job)
-            ? 'This option is already active.'
-            : 'Finish your current option before choosing another.'
-          : account.balance < feeDue
-            ? `Your current balance is not enough to pay the ${isUpgrade ? 'upgrade difference' : 'job fee'}.`
-            : '';
-      confirmButton.textContent = internship ? 'Start internship' : isUpgrade ? 'Confirm upgrade' : 'Confirm job';
-      confirmButton.disabled = !account || invalidSelection || account.balance < feeDue;
+      document.getElementById('jobConfirmForm').dataset.isUpgrade = String(isUpgrade);
+      details.textContent = isUpgrade
+        ? `Upgrade from Job ${activeJob.id} to Job ${job.id}: ${formatPointEquivalent(feeDue)} fee difference. Job ${job.id} simulates ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days (${formatPointEquivalent(totalIncome)} total). Net after the full fee is ${formatPointEquivalent(netDifference)}.`
+        : `Job ${job.id} costs ${formatPointEquivalent(job.fee)} upfront. It simulates ${formatPointEquivalent(job.dailyIncome)} per day for ${jobDurationDays} days (${formatPointEquivalent(totalIncome)} total). Net after the fee is ${formatPointEquivalent(netDifference)}.`;
+      const invalidUpgrade = !!activeJob && !isUpgrade;
+      const insufficientBalance = !account || account.balance < feeDue;
+      status.textContent = invalidUpgrade
+        ? activeJob.id === job.id
+          ? 'This is already your active job.'
+          : 'You can only upgrade to a higher-numbered job.'
+        : insufficientBalance
+          ? `Your current balance is not enough to pay the ${isUpgrade ? 'upgrade difference' : 'job fee'}.`
+          : '';
+      confirmButton.textContent = isUpgrade ? 'Confirm upgrade' : 'Confirm job';
+      confirmButton.disabled = invalidUpgrade || insufficientBalance;
       document.getElementById('jobConfirmDialog').showModal();
     }
 
@@ -3839,7 +3784,7 @@
         'signup-status',
         'success',
         referrer
-          ? 'Account created successfully! Your referral link was attached. Referrers may earn a spin when three referred users join a job or internship.'
+          ? `Account created successfully! A referral link was attached. The referral reward will be paid when the new user joins a job.`
           : 'Account created successfully! Welcome aboard.'
       );
       setTimeout(renderApp, 400);
@@ -3869,25 +3814,22 @@
     document.getElementById('jobConfirmForm').addEventListener('submit', (event) => {
       event.preventDefault();
       const jobId = Number(event.currentTarget.dataset.jobId);
-      const job = getJobOption(jobId);
+      const job = jobOptions.find((option) => option.id === jobId);
       const session = getSession();
       const accounts = getAccounts();
       const account = accounts.find((savedAccount) => savedAccount.email === (session.email || '').toLowerCase());
       const status = document.getElementById('jobConfirmStatus');
 
       if (!job || !account) {
-        status.textContent = 'Your account or selected option could not be found.';
+        status.textContent = 'Your account or selected job could not be found.';
         return;
       }
-      const activeJob = account.activeJob && account.activeJob.daysPaid < getDurationDays(account.activeJob)
+      const activeJob = account.activeJob && account.activeJob.daysPaid < jobDurationDays
         ? account.activeJob
         : null;
-      const internship = isInternship(job);
-      const isUpgrade = !!activeJob && !internship && !isInternship(activeJob) && job.id > activeJob.id;
-      if (activeJob && !isUpgrade) {
-        status.textContent = isCurrentOption(activeJob, job)
-          ? 'This option is already active.'
-          : 'Finish your current option before choosing another.';
+      const isUpgrade = event.currentTarget.dataset.isUpgrade === 'true';
+      if (activeJob && (!isUpgrade || job.id <= activeJob.id)) {
+        status.textContent = 'You can only upgrade your active job to a higher-numbered job.';
         return;
       }
       const feeDue = isUpgrade ? job.fee - activeJob.fee : job.fee;
@@ -3896,10 +3838,10 @@
         return;
       }
 
+      account.balance = Math.round((account.balance - feeDue) * 100) / 100;
       const startedAt = Date.now();
       account.activeJob = {
         id: job.id,
-        type: internship ? 'internship' : 'job',
         fee: job.fee,
         dailyIncome: job.dailyIncome,
         startedAt,
@@ -3908,21 +3850,16 @@
         incomePaid: 0
       };
 
-      if (feeDue > 0) account.balance = Math.round((account.balance - feeDue) * 100) / 100;
-      const referralBreakdown = !internship && !isUpgrade
-        ? applyReferralRewards(account, job.fee, accounts)
-        : { total: 0, levels: [] };
+      const referralBreakdown = isUpgrade ? { total: 0, levels: [] } : applyReferralRewards(account, job.fee, accounts);
       const referralSpinAwarded = !isUpgrade && awardReferralSpinIfEligible(account, accounts);
       saveAccounts(accounts);
-      recordJobActivity(account, job.id, isUpgrade ? 'upgrade' : 'join', startedAt, internship ? 'internship' : 'job');
+      recordJobActivity(account, job.id, isUpgrade ? 'upgrade' : 'join', startedAt);
       document.getElementById('jobConfirmDialog').close();
-      document.getElementById('moneyStatus').textContent = internship
-        ? `Your free 2-day internship has started. No payment was deducted.${referralSpinAwarded ? ' Your referrer earned a spin for three referred users joining internships.' : ''}`
-        : isUpgrade
-          ? `Upgraded to Job ${job.id}. The remaining ${formatBalance(feeDue)} was deducted from your balance. No referral reward is paid on upgrades.`
-          : referralBreakdown.levels.length
-            ? `Job ${job.id} selected. ${formatBalance(feeDue)} was deducted from your balance. Referral reward paid: ${referralBreakdown.levels.map((level) => `${level.label} ${formatPointEquivalent(level.amount)}`).join(', ')}.${referralSpinAwarded ? ' Your referrer also earned a spin for 3 referred users joining jobs.' : ''}`
-            : `Job ${job.id} selected. ${formatBalance(feeDue)} was deducted from your balance. No referral reward was paid.${referralSpinAwarded ? ' Your referrer also earned a spin for 3 referred users joining jobs.' : ''}`;
+      document.getElementById('moneyStatus').textContent = isUpgrade
+        ? `Upgraded to Job ${job.id}. The remaining ${formatBalance(feeDue)} was deducted from your balance. No referral reward is paid on upgrades.`
+        : referralBreakdown.levels.length
+          ? `Job ${job.id} selected. ${formatBalance(feeDue)} was deducted from your balance. Referral reward paid: ${referralBreakdown.levels.map((level) => `${level.label} ${formatPointEquivalent(level.amount)}`).join(', ')}.${referralSpinAwarded ? ' Your referrer also earned a spin for 3 referred users joining jobs.' : ''}`
+          : `Job ${job.id} selected. ${formatBalance(feeDue)} was deducted from your balance. No referral reward was paid.${referralSpinAwarded ? ' Your referrer also earned a spin for 3 referred users joining jobs.' : ''}`;
       renderApp();
     });
 
@@ -3990,6 +3927,10 @@
       };
 
       queue.unshift(request);
+      if (action === 'withdrawal') {
+        account.balance = Number((Number(account.balance) - withdrawalBreakdown.requestedAmount).toFixed(2));
+        saveAccounts(accounts);
+      }
       saveRequestQueue(queue);
       renderApp();
       document.getElementById('moneyDialog').close();
@@ -4084,6 +4025,7 @@
 
       const breakdown = getWithdrawalBreakdown(amount);
       account.withdrawalMobileMoney = { number, network };
+      account.balance = Number((Number(account.balance) - breakdown.requestedAmount).toFixed(2));
       saveAccounts(accounts);
       const queue = getRequestQueue();
       queue.unshift({
@@ -4182,7 +4124,7 @@
         }
         if (destination === 'task') {
           const account = getCurrentAccount();
-          if (!account?.activeJob || account.activeJob.daysPaid >= getDurationDays(account.activeJob)) return;
+          if (!account?.activeJob || account.activeJob.daysPaid >= jobDurationDays) return;
         }
         showDashboardPage(destination);
       });

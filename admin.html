@@ -98,9 +98,6 @@
   </div>
 
   <script>
-    const jobDurationDays = 360;
-    const internshipDurationDays = 2;
-
     function getAccounts() {
       try {
         const accounts = JSON.parse(localStorage.getItem('prhAccounts'));
@@ -177,14 +174,9 @@
         registered.textContent = Number.isFinite(registeredAt) && registeredAt > 0
           ? `Joined ${new Date(registeredAt).toLocaleDateString()}`
           : 'Join date not recorded';
-        const isInternship = account.activeJob?.type === 'internship' ||
-          (!account.activeJob?.type && Number(account.activeJob?.fee) === 0);
-        const durationDays = isInternship ? internshipDurationDays : jobDurationDays;
-        const activeJob = account.activeJob && account.activeJob.daysPaid < durationDays;
+        const activeJob = account.activeJob && account.activeJob.daysPaid < 360;
         const job = document.createElement('span');
-        job.textContent = activeJob
-          ? isInternship ? 'Active Internship' : `Active Job ${account.activeJob.id}`
-          : 'No active job or internship';
+        job.textContent = activeJob ? `Active Job ${account.activeJob.id}` : 'No active job';
         meta.append(registered, job);
 
         const deleteButton = document.createElement('button');
